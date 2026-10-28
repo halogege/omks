@@ -1,0 +1,484 @@
+{
+ "defaults": {
+  "maxQuestions": 10,
+  "maxExtraCards": 10,
+  "defaultDays": 7
+ },
+ "groups": [
+  {
+   "name": "General, Personal, Career",
+   "col": 5,
+   "cats": [
+    {
+     "name": "Question Based",
+     "items": [
+      {
+       "id": "g3",
+       "name": "General 3 Cards",
+       "price": 30000,
+       "kind": "perQuestion",
+       "unit": "pertanyaan"
+      },
+      {
+       "id": "g5",
+       "name": "General 5 Cards",
+       "price": 50000,
+       "kind": "perQuestion",
+       "unit": "pertanyaan"
+      },
+      {
+       "id": "tact",
+       "name": "Tactical Reading",
+       "price": 60000,
+       "kind": "perQuestion",
+       "unit": "pertanyaan"
+      },
+      {
+       "id": "cust",
+       "name": "Custom Reading",
+       "price": 50000,
+       "kind": "custom",
+       "extraCardPrice": 10000
+      }
+     ]
+    },
+    {
+     "name": "Karier & Akademik",
+     "items": [
+      {
+       "id": "karier",
+       "name": "Tema Karier",
+       "price": 70000,
+       "kind": "perQuestion",
+       "unit": "kasus"
+      },
+      {
+       "id": "akad",
+       "name": "Tema Akademik",
+       "price": 70000,
+       "kind": "perQuestion",
+       "unit": "kasus"
+      },
+      {
+       "id": "bisnis",
+       "name": "Tema Bisnis",
+       "price": 80000,
+       "kind": "perQuestion",
+       "unit": "kasus"
+      }
+     ]
+    },
+    {
+     "name": "Social Life",
+     "items": [
+      {
+       "id": "badfeel",
+       "name": "Bad Feeling",
+       "price": 70000,
+       "kind": "fixed"
+      },
+      {
+       "id": "annoyed",
+       "name": "Why Am I Annoyed With This Person?",
+       "price": 70000,
+       "kind": "fixed"
+      },
+      {
+       "id": "fightfr",
+       "name": "Fighting With a Friend",
+       "price": 70000,
+       "kind": "fixed"
+      },
+      {
+       "id": "cutedrama",
+       "name": "Cut the Drama",
+       "price": 70000,
+       "kind": "fixed"
+      },
+      {
+       "id": "wtf",
+       "name": "WTF Is Going On",
+       "price": 70000,
+       "kind": "fixed"
+      },
+      {
+       "id": "drama",
+       "name": "The Drama Royale",
+       "price": 70000,
+       "kind": "fixed"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Self Development",
+   "col": 6,
+   "cats": [
+    {
+     "name": "Know Yourself",
+     "items": [
+      {
+       "id": "inner",
+       "name": "Inner Child",
+       "price": 70000,
+       "kind": "fixed"
+      },
+      {
+       "id": "persona",
+       "name": "Persona Self",
+       "price": 70000,
+       "kind": "fixed"
+      },
+      {
+       "id": "ego",
+       "name": "Ego Self",
+       "price": 70000,
+       "kind": "fixed"
+      },
+      {
+       "id": "higher",
+       "name": "Higher Self",
+       "price": 70000,
+       "kind": "fixed"
+      },
+      {
+       "id": "shadow",
+       "name": "Shadow Self",
+       "price": 70000,
+       "kind": "fixed"
+      },
+      {
+       "id": "pastself",
+       "name": "Past Self Is Calling",
+       "price": 70000,
+       "kind": "fixed"
+      }
+     ]
+    },
+    {
+     "name": "Emotional Aid Kit",
+     "items": [
+      {
+       "id": "need",
+       "name": "What Do You Need",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "loveyou",
+       "name": "Love Yourself",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "selfcare",
+       "name": "Self Care",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "reflect",
+       "name": "Self Reflection",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "gravity",
+       "name": "Fix Your Gravity",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "anger",
+       "name": "Inner Anger",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "heal",
+       "name": "Heal the Emotion",
+       "price": 80000,
+       "kind": "fixed"
+      }
+     ]
+    },
+    {
+     "name": "Family Problems",
+     "items": [
+      {
+       "id": "famdin",
+       "name": "Family Dinner",
+       "price": 90000,
+       "kind": "fixed"
+      },
+      {
+       "id": "mother",
+       "name": "Mother Wound",
+       "price": 90000,
+       "kind": "fixed"
+      },
+      {
+       "id": "father",
+       "name": "Father Wound",
+       "price": 90000,
+       "kind": "fixed"
+      }
+     ]
+    },
+    {
+     "name": "Shadow Working",
+     "items": [
+      {
+       "id": "emperor",
+       "name": "Personal Power",
+       "price": 100000,
+       "kind": "fixed"
+      },
+      {
+       "id": "tower",
+       "name": "Sacred Destruction",
+       "price": 120000,
+       "kind": "fixed"
+      },
+      {
+       "id": "devil",
+       "name": "Dark Night of the Soul",
+       "price": 140000,
+       "kind": "fixed"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Romance",
+   "col": 7,
+   "cats": [
+    {
+     "name": "Steps to Love",
+     "items": [
+      {
+       "id": "looklove",
+       "name": "Looking for Love",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "readylove",
+       "name": "Readiness of Love",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "lovelife",
+       "name": "Love Life Overview",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "soulcrush",
+       "name": "Are They the One: Soul Crush",
+       "price": 90000,
+       "kind": "fixed"
+      },
+      {
+       "id": "complex",
+       "name": "Are They the One: Relationship Complex",
+       "price": 90000,
+       "kind": "fixed"
+      },
+      {
+       "id": "twolovers",
+       "name": "Between Two Lovers",
+       "price": 90000,
+       "kind": "fixed"
+      },
+      {
+       "id": "spouse",
+       "name": "Future Spouse",
+       "price": 90000,
+       "kind": "fixed"
+      },
+      {
+       "id": "compat",
+       "name": "Love Compatibility",
+       "price": 90000,
+       "kind": "fixed"
+      }
+     ]
+    },
+    {
+     "name": "It's Complicated",
+     "items": [
+      {
+       "id": "isghost",
+       "name": "Is This Ghosting?",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "survivor",
+       "name": "Survivor of Ghosting",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "betterworse",
+       "name": "For the Better or Worse",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "moveon",
+       "name": "Moving On",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "breakup",
+       "name": "Break-up Reasons",
+       "price": 90000,
+       "kind": "fixed"
+      },
+      {
+       "id": "pattern",
+       "name": "Romance Pattern",
+       "price": 90000,
+       "kind": "fixed"
+      },
+      {
+       "id": "chain",
+       "name": "Chain Breaker (Karmic)",
+       "price": 90000,
+       "kind": "fixed"
+      },
+      {
+       "id": "trauma",
+       "name": "Love Life Trauma",
+       "price": 90000,
+       "kind": "fixed"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Spiritual",
+   "col": 8,
+   "cats": [
+    {
+     "name": "Spiritual Realm",
+     "items": [
+      {
+       "id": "dream",
+       "name": "Dream Interpretation",
+       "price": 100000,
+       "kind": "fixed"
+      },
+      {
+       "id": "priestess",
+       "name": "High Priestess",
+       "price": 100000,
+       "kind": "fixed"
+      },
+      {
+       "id": "hermit",
+       "name": "Hermit's Guidance",
+       "price": 100000,
+       "kind": "fixed"
+      },
+      {
+       "id": "spirit",
+       "name": "Spirit Guide's Message",
+       "price": 100000,
+       "kind": "fixed"
+      }
+     ]
+    },
+    {
+     "name": "Past Lives",
+     "items": [
+      {
+       "id": "oldfriend",
+       "name": "Hello Old Friend",
+       "price": 120000,
+       "kind": "fixed"
+      },
+      {
+       "id": "karma",
+       "name": "Past Life Karma",
+       "price": 160000,
+       "kind": "fixed"
+      },
+      {
+       "id": "confront",
+       "name": "Confronting My Past Life",
+       "price": 160000,
+       "kind": "fixed"
+      },
+      {
+       "id": "plo",
+       "name": "Past Life Overview",
+       "price": 180000,
+       "kind": "fixed"
+      },
+      {
+       "id": "plr",
+       "name": "Past Life Relations",
+       "price": 200000,
+       "kind": "fixed"
+      },
+      {
+       "id": "plokarma",
+       "name": "PLO + Karma",
+       "price": 320000,
+       "kind": "fixed"
+      },
+      {
+       "id": "ploplr",
+       "name": "PLO + Relations",
+       "price": 360000,
+       "kind": "fixed"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Surprise Me!",
+   "col": 9,
+   "cats": [
+    {
+     "name": "Rahasia",
+     "items": [
+      {
+       "id": "bfe",
+       "name": "Before Everything Else",
+       "price": 111000,
+       "kind": "fixed"
+      },
+      {
+       "id": "wind",
+       "name": "Anyway the Wind Blows",
+       "price": 111000,
+       "kind": "fixed"
+      },
+      {
+       "id": "less",
+       "name": "The Less I Know",
+       "price": 111000,
+       "kind": "fixed"
+      },
+      {
+       "id": "caves",
+       "name": "As The World Caves in",
+       "price": 111000,
+       "kind": "fixed"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
