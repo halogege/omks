@@ -68,6 +68,8 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
 .s-delivered{background:var(--b-del-bg);color:var(--b-del-fg)}.s-cancelled{background:var(--b-can-bg);color:var(--b-can-fg)}
 .md{display:none}.sm{display:block;margin-top:6px;font-weight:500}.sd{margin-top:4px;font-size:.78rem;color:var(--mute)}
 @media(min-width:900px){.md{display:table-cell}.sm{display:none}}
+.sh{display:none}
+@media(max-width:899px){.lg{display:none}.sh{display:inline}table{min-width:0}th:nth-child(2){width:40%}th:nth-child(5){width:26%}th:nth-child(6){width:34%}th,td{padding:10px 8px}.dt,.badge{white-space:normal}}
 .pager{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:18px}
 .pg{min-width:40px;min-height:40px;padding:0 10px;border:2px solid var(--fg);border-radius:2px;background:var(--card);color:var(--fg);font:800 .85rem Archivo,sans-serif;cursor:pointer;transition:background .15s}
 .pg:hover:not(:disabled){background:var(--hi);color:#000144}.pg[aria-current=page]{background:var(--fg);color:var(--bg)}.pg:disabled{opacity:.4;cursor:not-allowed}
@@ -143,7 +145,7 @@ const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"]
 const ST={received:'Form Received',progress:'On Progress',delivered:'Delivered',cancelled:'Cancelled'},PAGE=15,REFRESH_MS=60000;
 let ALL=[],status='',q='',loaded=false,loading=false,lastFocus=null,openCode='';
 const SEC=[{k:'a',t:'Aktif',em:'lagi dikerjakan ✦',f:o=>isActive(o),p:1},{k:'d',t:'Completed',em:'sudah selesai ✦',f:o=>!isActive(o),p:1}];
-$('#secs').innerHTML=SEC.map(s=>`<section class="blk" id="sec-${s.k}"><div class="top"><span>${s.t}<b id="c-${s.k}">0</b></span><em>${s.em}</em></div><div class="wrapt"><table><thead><tr><th>Kode</th><th>Nama</th><th class="md">Tema</th><th class="md">Order</th><th>Received</th><th>Status Pesanan</th></tr></thead><tbody id="body-${s.k}"></tbody></table><div id="state-${s.k}"></div></div><nav class="pager" id="pager-${s.k}" aria-label="Halaman ${s.t}"></nav></section>`).join('');
+$('#secs').innerHTML=SEC.map(s=>`<section class="blk" id="sec-${s.k}"><div class="top"><span>${s.t}<b id="c-${s.k}">0</b></span><em>${s.em}</em></div><div class="wrapt"><table><thead><tr><th class="md">Kode</th><th>Nama</th><th class="md">Tema</th><th class="md">Order</th><th>Received</th><th><span class="lg">Status Pesanan</span><span class="sh">Status</span></th></tr></thead><tbody id="body-${s.k}"></tbody></table><div id="state-${s.k}"></div></div><nav class="pager" id="pager-${s.k}" aria-label="Halaman ${s.t}"></nav></section>`).join('');
 // Ambil daftar pesanan dari respon API; toleran terhadap nama field lain / format string.
 const ITEM_KEYS=['items','item','pesanan','menu','menus','reading','readings'];
 function itemsOf(o){let v;for(const k of ITEM_KEYS){const x=o[k];if(Array.isArray(x)&&x.length||typeof x==='string'&&x.trim()){v=x;break}}
@@ -170,7 +172,7 @@ function themeOf(l){const raw=String(l),low=raw.toLowerCase(),s=raw.replace(/\s*
 function themes(items){const out=[];(items||[]).forEach(l=>{const v=themeOf(l);if(v&&!out.some(x=>x.toLowerCase()===v.toLowerCase()))out.push(v)});return out}
 function tr(o){
   const tg=o.tema||[],tags=tg.length?tg.map(i=>`<span class="tg" data-t="${slug(i)}">${esc(i)}</span>`).join(''):'—',thw=`<div class="th${tg.length>=3?' col':''}">${tags}</div>`;
-  return `<tr tabindex="0" data-n="${o.n}"><td class="code">${esc(o.code||'—')}</td><td class="nm"><div class="nmw">${esc(o.name)}<div class="sm">${thw}<div class="sd">Order: ${esc(fmtDate(o.orderDate))}</div></div></div></td>
+  return `<tr tabindex="0" data-n="${o.n}"><td class="code md">${esc(o.code||'—')}</td><td class="nm"><div class="nmw">${esc(o.name)}<div class="sm">${thw}</div></div></td>
 <td class="md">${thw}</td>
 <td class="md dt">${esc(fmtDate(o.orderDate))}</td><td class="dt">${esc(fmtDate(o.deadline))}</td><td><span class="badge s-${esc(o.status)}">${esc(ST[o.status]||o.status)}</span></td></tr>`;
 }
