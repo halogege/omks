@@ -2,7 +2,7 @@
  "defaults": {
   "maxQuestions": 10,
   "maxExtraCards": 10,
-  "defaultDays": 7
+  "defaultDays": 3
  },
  "groups": [
   {
@@ -374,25 +374,29 @@
        "id": "dream",
        "name": "Dream Interpretation",
        "price": 100000,
-       "kind": "fixed"
+       "kind": "fixed",
+       "days": 7
       },
       {
        "id": "priestess",
        "name": "High Priestess",
        "price": 100000,
-       "kind": "fixed"
+       "kind": "fixed",
+       "days": 7
       },
       {
        "id": "hermit",
        "name": "Hermit's Guidance",
        "price": 100000,
-       "kind": "fixed"
+       "kind": "fixed",
+       "days": 7
       },
       {
        "id": "spirit",
        "name": "Spirit Guide's Message",
        "price": 100000,
-       "kind": "fixed"
+       "kind": "fixed",
+       "days": 7
       }
      ]
     },
@@ -403,43 +407,50 @@
        "id": "oldfriend",
        "name": "Hello Old Friend",
        "price": 120000,
-       "kind": "fixed"
+       "kind": "fixed",
+       "days": 7
       },
       {
        "id": "karma",
        "name": "Past Life Karma",
        "price": 160000,
-       "kind": "fixed"
+       "kind": "fixed",
+       "days": 7
       },
       {
        "id": "confront",
        "name": "Confronting My Past Life",
        "price": 160000,
-       "kind": "fixed"
+       "kind": "fixed",
+       "days": 7
       },
       {
        "id": "plo",
        "name": "Past Life Overview",
        "price": 180000,
-       "kind": "fixed"
+       "kind": "fixed",
+       "days": 7
       },
       {
        "id": "plr",
        "name": "Past Life Relations",
        "price": 200000,
-       "kind": "fixed"
+       "kind": "fixed",
+       "days": 7
       },
       {
        "id": "plokarma",
        "name": "PLO + Karma",
        "price": 320000,
-       "kind": "fixed"
+       "kind": "fixed",
+       "days": 7
       },
       {
        "id": "ploplr",
        "name": "PLO + Relations",
        "price": 360000,
-       "kind": "fixed"
+       "kind": "fixed",
+       "days": 7
       }
      ]
     }
@@ -450,7 +461,7 @@
    "col": 9,
    "cats": [
     {
-     "name": "Rahasia",
+     "name": "Omakase",
      "items": [
       {
        "id": "bfe",
