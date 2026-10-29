@@ -7,7 +7,6 @@
  "groups": [
   {
    "name": "General, Personal, Career",
-   "theme": "General",
    "col": 5,
    "cats": [
     {
@@ -114,7 +113,6 @@
   },
   {
    "name": "Self Development",
-   "theme": "Self Development",
    "col": 6,
    "cats": [
     {
@@ -255,7 +253,6 @@
   },
   {
    "name": "Romance",
-   "theme": "Romance",
    "col": 7,
    "cats": [
     {
@@ -368,7 +365,6 @@
   },
   {
    "name": "Spiritual",
-   "theme": "Spiritual",
    "col": 8,
    "cats": [
     {
@@ -462,7 +458,6 @@
   },
   {
    "name": "Surprise Me!",
-   "theme": "Surprise Me",
    "col": 9,
    "cats": [
     {
@@ -490,6 +485,94 @@
        "id": "caves",
        "name": "As The World Caves in",
        "price": 111000,
+       "kind": "fixed"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bazi",
+   "col": 11,
+   "service": "bazi",
+   "cats": [
+    {
+     "name": "Know Yourself (Bazi)",
+     "items": [
+      {
+       "id": "bzpot",
+       "name": "Peak Potential",
+       "price": 90000,
+       "kind": "fixed"
+      },
+      {
+       "id": "bzelem",
+       "name": "Element Balance",
+       "price": 80000,
+       "kind": "fixed"
+      },
+      {
+       "id": "bzpart",
+       "name": "Partner Blueprint",
+       "price": 90000,
+       "kind": "fixed"
+      },
+      {
+       "id": "bzpar",
+       "name": "Roots & Support",
+       "price": 90000,
+       "kind": "fixed"
+      }
+     ]
+    },
+    {
+     "name": "Career & Strategy",
+     "items": [
+      {
+       "id": "bzkar",
+       "name": "Career Compass",
+       "price": 110000,
+       "kind": "fixed"
+      },
+      {
+       "id": "bzstrat",
+       "name": "Unstuck Strategy",
+       "price": 120000,
+       "kind": "fixed"
+      }
+     ]
+    },
+    {
+     "name": "Timing & Full",
+     "items": [
+      {
+       "id": "bzyear",
+       "name": "Yearly Blessing",
+       "price": 110000,
+       "kind": "fixed"
+      },
+      {
+       "id": "bzdec10",
+       "name": "Decade by Decade: 10 Years",
+       "price": 90000,
+       "kind": "fixed"
+      },
+      {
+       "id": "bzdec20",
+       "name": "Decade by Decade: 20 Years",
+       "price": 170000,
+       "kind": "fixed"
+      },
+      {
+       "id": "bzdec30",
+       "name": "Decade by Decade: 30 Years",
+       "price": 250000,
+       "kind": "fixed"
+      },
+      {
+       "id": "bzfull",
+       "name": "Full Bazi Reading",
+       "price": 444000,
        "kind": "fixed"
       }
      ]
