@@ -130,6 +130,8 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
 .note{margin:24px 0 0;font-size:13.12px;color:var(--mute);max-width:70ch}
 #modal,#amodal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,1,68,.55)}
 #modal.open,#amodal.open{display:flex}
+.ib{display:flex;gap:8px;flex:none}.ctl{min-width:0}
+@media(min-width:768px){.ctl{flex-wrap:nowrap}input[type=search]{flex:0 1 240px;width:auto;min-width:130px}}
 .aerr{color:var(--red);font-weight:700;font-size:14px;margin:10px 0 0}.dlg .il{margin-top:6px}
 .dlg{position:relative;width:100%;max-width:640px;max-height:90vh;overflow:auto;background:var(--card);color:var(--fg);border:2px solid var(--fg);border-radius:3px;padding:22px;box-shadow:6px 6px 0 var(--hi)}
 .x{position:absolute;right:12px;top:10px;border:0;background:none;color:var(--mute);font-size:19.2px;cursor:pointer;padding:6px 10px}.x:hover{color:var(--fg)}
@@ -156,8 +158,8 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
   <div class="ctl">
     <input id="q" type="search" placeholder="Cari kode, nama, platform…" autocomplete="off" maxlength="40" aria-label="Cari order">
     <select id="statusFilter" aria-label="Saring status"></select>
-    <button class="icon" id="dark" type="button" aria-label="Ganti mode gelap" title="Mode gelap">☾</button>
-    <button class="icon" id="admin" type="button" aria-label="Admin" title="Masuk admin">🔒</button>
+    <span class="ib"><button class="icon" id="dark" type="button" aria-label="Ganti mode gelap" title="Mode gelap">☾</button>
+    <button class="icon" id="admin" type="button" aria-label="Admin" title="Masuk admin">🔒</button></span>
   </div>
 </header>
 
