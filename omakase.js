@@ -2,13 +2,13 @@
    Pasang SATU embed di Carrd:  <script src="https://DOMAIN-VERCEL-OMAKASE/omakase.js"></script>
    - Ada container id="omakase-order"   -> memuat form order
    - Ada container id="omakase-tracker" -> memuat tracker
-   Atribut data-width, data-scale, data-bg, data-theme, data-api ikut diteruskan ke keduanya. */
+   Atribut data-width, data-scale, data-bg, data-theme, data-api, data-anchor ikut diteruskan ke keduanya. */
 (function () {
   "use strict";
   var cs = document.currentScript || document.querySelector('script[src*="/omakase.js"]');
   if (!cs || !cs.src) return;
   var BASE = new URL(cs.src).origin;
-  var ATTRS = ["data-width", "data-scale", "data-bg", "data-theme", "data-api", "data-hash"];
+  var ATTRS = ["data-width", "data-scale", "data-bg", "data-theme", "data-api", "data-anchor"];
 
   function add(file) {
     var s = document.createElement("script");
