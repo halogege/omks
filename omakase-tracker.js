@@ -2,13 +2,11 @@
    Dipasang lewat: <script src="https://DOMAIN-VERCEL/omakase-tracker.js"></script>
    Tracker muncul di elemen dengan id="omakase-tracker".
    Data: menus.json dan config.js (API_URL) dari domain yang sama.
-   Opsional di tag script: data-width="1152" data-scale="1" data-bg="transparent" data-theme="light" data-api="https://.../exec" data-hash="tracker"
-   Link order: https://DOMAIN/?kode=OMK-0091#tracker (juga terbaca #tracker?kode=OMK-0091 atau #OMK-0091).
-   data-hash = nama section Carrd untuk tracker (default: id section tempat container berada, atau "tracker"). */
+   Opsional di tag script: data-width="1152" data-scale="1" data-bg="transparent" data-theme="light" data-api="https://.../exec" */
 (function () {
   "use strict";
   var CONTAINER_ID = "omakase-tracker";
-  var BASE = "", WIDTH = 1152, BG = "", SCALE = 1, API_ATTR = "", AUTODARK = true, HASHNAME = "tracker", HASH_SET = false;
+  var BASE = "", WIDTH = 1152, BG = "", SCALE = 1, API_ATTR = "", AUTODARK = true;
   try {
     var cs = document.currentScript || document.querySelector('script[src*="omakase-tracker.js"]');
     BASE = new URL(cs.src).origin;
@@ -17,7 +15,6 @@
     var ds = parseFloat(cs.getAttribute("data-scale")); if (ds >= 0.5 && ds <= 1.5) SCALE = ds;
     API_ATTR = cs.getAttribute("data-api") || "";
     if (cs.getAttribute("data-theme") === "light") AUTODARK = false;
-    var dh = (cs.getAttribute("data-hash") || "").replace(/[^A-Za-z0-9_-]/g, ""); if (dh) { HASHNAME = dh; HASH_SET = true; }
   } catch (e) { BASE = ""; }
 
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
@@ -70,8 +67,8 @@
 :host(.dark){color-scheme:dark;--bg:#07070f;--fg:#f1f1ff;--mute:#9b9cc6;--card:#0f0f1c;--line:#2b2b42;--hover:rgba(255,215,94,.14);--lilac:#23244f;--sky:#1a2f3d;--sh:rgba(255,255,255,.12);
 --b-rec-bg:#1a2f3d;--b-rec-fg:#fff;--b-pro-bg:#854d0e;--b-pro-fg:#fff;--b-del-bg:#166534;--b-del-fg:#fff;--b-can-bg:#404040;--b-can-fg:#fff}
 *{box-sizing:border-box}
-:host{--c-general:#cfe6f2;--c-selfdevelopment:#c9f0d4;--c-romance:#ffc9dc;--c-spiritual:#d8d9fb;--c-surpriseme:#ffd75e;--c-bazi:#ffd0b0}
-:host(.dark){--c-general:#1a4a63;--c-selfdevelopment:#14532d;--c-romance:#7a2146;--c-spiritual:#3a3b85;--c-surpriseme:#854d0e;--c-bazi:#7c3a14}
+:host{--c-general:#cfe6f2;--c-selfdevelopment:#c9f0d4;--c-romance:#ffc9dc;--c-spiritual:#d8d9fb;--c-surpriseme:#ffd75e;--c-bazi:#ffd0b0;--c-question:#cfe6f2;--c-career:#e8e0b8;--c-social:#bfeeea}
+:host(.dark){--c-general:#1a4a63;--c-selfdevelopment:#14532d;--c-romance:#7a2146;--c-spiritual:#3a3b85;--c-surpriseme:#854d0e;--c-bazi:#7c3a14;--c-question:#1a4a63;--c-career:#5b4b1a;--c-social:#134e4a}
 .omk{background:var(--bg);color:var(--fg);font:16px/1.5 Archivo,system-ui,sans-serif;text-align:left;-webkit-text-size-adjust:100%;transition:background .2s,color .2s}
 .strip{height:28px;background:repeating-conic-gradient(var(--fg) 0 25%,transparent 0 50%) 0 0/28px 28px}
 .strip.end{margin-top:34px}
@@ -112,8 +109,8 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
 .nm{font-weight:700}
 .nmw{overflow-wrap:anywhere;word-break:break-word}
 .th{display:flex;flex-wrap:wrap;gap:4px}.th.col{flex-direction:column;align-items:flex-start}
-.tg{display:inline-block;padding:2px 8px;border:2px solid var(--fg);border-radius:2px;background:var(--lilac);font-size:10.56px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
-.tg[data-t=general]{background:var(--c-general)}.tg[data-t=selfdevelopment]{background:var(--c-selfdevelopment)}.tg[data-t=romance]{background:var(--c-romance)}.tg[data-t=spiritual]{background:var(--c-spiritual)}.tg[data-t=surpriseme]{background:var(--c-surpriseme)}.tg[data-t=bazi]{background:var(--c-bazi)}
+.tg{display:inline-block;padding:2px 8px;border:2px solid var(--fg);border-radius:2px;background:var(--lilac);font-size:10.56px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.tg[data-t=general]{background:var(--c-general)}.tg[data-t=selfdevelopment]{background:var(--c-selfdevelopment)}.tg[data-t=romance]{background:var(--c-romance)}.tg[data-t=spiritual]{background:var(--c-spiritual)}.tg[data-t=surpriseme]{background:var(--c-surpriseme)}.tg[data-t=bazi]{background:var(--c-bazi)}.tg[data-t=question]{background:var(--c-question)}.tg[data-t=career]{background:var(--c-career)}.tg[data-t=social]{background:var(--c-social)}
 .dt{white-space:nowrap}
 .badge{display:inline-block;padding:3px 9px;border:2px solid var(--fg);border-radius:2px;font-size:10.56px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
 .s-received{background:var(--b-rec-bg);color:var(--b-rec-fg)}.s-progress{background:var(--b-pro-bg);color:var(--b-pro-fg)}
@@ -190,8 +187,6 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
   async function start(container) {
     injectFonts();
     var API = API_ATTR || await loadApi();
-    // Nama section Carrd tempat tracker berada (dipakai untuk pindah section saat link ?kode= dibuka)
-    if (!HASH_SET) { var sec = container.closest && container.closest("section[id]"); if (sec && /^[A-Za-z0-9_-]+$/.test(sec.id)) HASHNAME = sec.id; }
     var css = scaleCss(CSS, SCALE).replace(/__W__/g, WIDTH);
     if (BG) css += "\n:host,:host(.dark){--bg:" + BG + "}";
     var host = mountHost(container);
@@ -236,9 +231,9 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
 
     // Kolom Tema: nama grup dari menus.json (General, Self Development, Romance, Spiritual, Surprise Me!), tanpa jumlah pertanyaan/kartu.
     // Label order dicocokkan ke nama menu di menus.json. Kalau tidak ketemu, dipakai kata tema di THEMES atau nama menu tanpa "(...)".
-    const THEMES=['spiritual','bazi','romance','general'],THEME_RE=new RegExp(THEMES.join('|'),'i');
+    const THEMES=['spiritual','bazi','romance','question','career','social','general'],THEME_RE=new RegExp(THEMES.join('|'),'i');
     let MAP=[];
-    function buildMap(c){MAP=[];((c&&c.groups)||[]).forEach(g=>g.cats.forEach(k=>k.items.forEach(i=>MAP.push([String(i.name).toLowerCase(),g.name.split(',')[0].trim()]))));MAP.sort((a,b)=>b[0].length-a[0].length)}
+    function buildMap(c){MAP=[];((c&&c.groups)||[]).forEach(g=>g.cats.forEach(k=>k.items.forEach(i=>MAP.push([String(i.name).toLowerCase(),k.theme||g.name.split(',')[0].trim()]))));MAP.sort((a,b)=>b[0].length-a[0].length)}
     function themeOf(l){const raw=String(l),low=raw.toLowerCase(),s=raw.replace(/\s*\([^)]*\)/g,'').trim(),h=MAP.find(m=>low.startsWith(m[0]))||MAP.find(m=>low.includes(m[0])),t=s.match(THEME_RE);return h?h[1]:t?t[0]:s}
     function themes(items){const out=[];(items||[]).forEach(l=>{const v=themeOf(l);if(v&&!out.some(x=>x.toLowerCase()===v.toLowerCase()))out.push(v)});return out}
     function tr(o){
@@ -304,7 +299,7 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
     $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cur)closeModal()});
     $('#share').addEventListener('click',async()=>{
-      if(!cur||!cur.code)return;const url=location.origin+location.pathname+'?kode='+encodeURIComponent(cur.code)+'#'+HASHNAME;
+      if(!cur||!cur.code)return;const url=location.origin+location.pathname+'?kode='+encodeURIComponent(cur.code);
       try{await navigator.clipboard.writeText(url);$('#copied').hidden=false}catch(e){prompt('Salin link ini:',url)}
     });
     /* events */
@@ -322,15 +317,7 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
     $('#dark').addEventListener('click',()=>{const d=toggleDark();try{localStorage.setItem('omk-theme',d?'dark':'light')}catch(e){}theme()});
     theme();
     // tautan langsung: tracker?kode=OMK-0091  (membuka detail order itu)
-    const CODE_RE=/^[A-Za-z]{2,6}-\d{1,6}$/;
-    // Terima: ?kode=OMK-0091 | #tracker?kode=OMK-0091 | #OMK-0091. Hash biasa seperti #tracker diabaikan.
-    function readKode(){let v='';try{const h=location.hash.slice(1),i=h.indexOf('?');v=new URLSearchParams(location.search).get('kode')||(i>-1?new URLSearchParams(h.slice(i+1)).get('kode'):'')||(i>-1?h.slice(0,i):h)||''}catch(e){}v=String(v).trim().slice(0,40);return CODE_RE.test(v)?v:''}
-    function gotoKode(k,scroll){if(loaded){const o=ALL.find(x=>String(x.code).toLowerCase()===k.toLowerCase());if(o)openModal(o)}else openCode=k;if(scroll)host.scrollIntoView({behavior:'auto',block:'start'})}
-    // Carrd menampilkan section lewat hash. Kalau halaman dibuka dengan ?kode= tapi hash-nya bukan section tracker (mis. kosong atau #home), pindahkan.
-    function goSection(){const b=location.hash.slice(1).split('?')[0];if(b!==HASHNAME){try{location.hash=HASHNAME}catch(e){}}}
-    let lastK='';
-    (function(){const k=readKode();if(k){lastK=k;openCode=k;setTimeout(goSection,300);setTimeout(goSection,1500)}})();
-    window.addEventListener('hashchange',()=>{const k=readKode();if(k&&k!==lastK){lastK=k;gotoKode(k,true)}});
+    (function(){const v=(new URLSearchParams(location.search).get('kode')||location.hash.slice(1)||'').slice(0,40);if(v){q=v;$('#q').value=v;openCode=v}})();
     fetch(BASE+'/menus.json',{cache:'no-cache'}).then(r=>r.json()).then(c=>{buildMap(c);if(loaded)render()}).catch(()=>{});
     load();
   }
