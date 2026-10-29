@@ -18,6 +18,8 @@
 html.dark{color-scheme:dark;--bg:#07070f;--fg:#f1f1ff;--mute:#9b9cc6;--card:#0f0f1c;--line:#2b2b42;--hover:rgba(255,215,94,.14);--lilac:#23244f;--sky:#1a2f3d;--sh:rgba(255,255,255,.12);
 --b-rec-bg:#1a2f3d;--b-rec-fg:#fff;--b-pro-bg:#854d0e;--b-pro-fg:#fff;--b-del-bg:#166534;--b-del-fg:#fff;--b-can-bg:#404040;--b-can-fg:#fff}
 *{box-sizing:border-box}
+:root{--c-general:#cfe6f2;--c-selfdevelopment:#c9f0d4;--c-romance:#ffc9dc;--c-spiritual:#d8d9fb;--c-surpriseme:#ffd75e;--c-bazi:#ffd0b0}
+html.dark{--c-general:#1a4a63;--c-selfdevelopment:#14532d;--c-romance:#7a2146;--c-spiritual:#3a3b85;--c-surpriseme:#854d0e;--c-bazi:#7c3a14}
 body{margin:0;min-height:100vh;background:var(--bg);color:var(--fg);font:16px/1.5 Archivo,system-ui,sans-serif;transition:background .2s,color .2s}
 .strip{height:28px;background:repeating-conic-gradient(var(--fg) 0 25%,transparent 0 50%) 0 0/28px 28px}
 .strip.end{margin-top:34px}
@@ -48,16 +50,18 @@ input:focus-visible,select:focus-visible,button:focus-visible,tr[tabindex]:focus
 .bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 10px;font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 .link{border:0;background:none;padding:6px 0;font:700 .72rem Archivo,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--fg);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .wrapt{overflow-x:auto;border:2px solid var(--fg);border-radius:3px;background:var(--card);box-shadow:6px 6px 0 var(--sh)}
-table{width:100%;border-collapse:collapse;font-size:.92rem}
+table{width:100%;min-width:560px;table-layout:fixed;border-collapse:collapse;font-size:.92rem}
+th:nth-child(1){width:13%}th:nth-child(2){width:21%}th:nth-child(3){width:18%}th:nth-child(4){width:14%}th:nth-child(5){width:14%}th:nth-child(6){width:20%}
 thead{background:var(--head);color:var(--headfg)}
-th{padding:12px;text-align:left;font-weight:800;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+th{padding:12px;text-align:left;font-weight:800;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase}
 td{padding:12px;border-top:1px solid var(--line);vertical-align:top}
 tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var(--hover)}
 .code{font-weight:900;white-space:nowrap;letter-spacing:-.01em}
 .nm{font-weight:700}
-.nmw{width:210px;white-space:normal;overflow-wrap:anywhere;word-break:break-word}@media(max-width:560px){.nmw{width:140px}}
-.th{display:flex;flex-wrap:wrap;gap:4px}
+.nmw{overflow-wrap:anywhere;word-break:break-word}
+.th{display:flex;flex-wrap:wrap;gap:4px}.th.col{flex-direction:column;align-items:flex-start}
 .tg{display:inline-block;padding:2px 8px;border:2px solid var(--fg);border-radius:2px;background:var(--lilac);font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.tg[data-t=general]{background:var(--c-general)}.tg[data-t=selfdevelopment]{background:var(--c-selfdevelopment)}.tg[data-t=romance]{background:var(--c-romance)}.tg[data-t=spiritual]{background:var(--c-spiritual)}.tg[data-t=surpriseme]{background:var(--c-surpriseme)}.tg[data-t=bazi]{background:var(--c-bazi)}
 .dt{white-space:nowrap}
 .badge{display:inline-block;padding:3px 9px;border:2px solid var(--fg);border-radius:2px;font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
 .s-received{background:var(--b-rec-bg);color:var(--b-rec-fg)}.s-progress{background:var(--b-pro-bg);color:var(--b-pro-fg)}
@@ -84,7 +88,7 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
 .il{display:block;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:800}
 .iv{display:block;font-weight:700;word-break:break-all}
 .sl{margin:18px 0 8px;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:800}
-.tm{border:2px solid var(--fg);border-radius:2px;background:var(--lilac);padding:10px 14px;font-weight:600;margin-bottom:8px}
+.tm{border:2px solid var(--fg);border-radius:2px;background:var(--card);padding:10px 14px;margin-bottom:8px}.tm .mn{margin-top:6px;font-weight:600}
 .mf{display:flex;justify-content:flex-end;align-items:center;gap:12px;margin-top:18px}
 .mf span{font-size:.8rem;color:var(--mute)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -141,11 +145,12 @@ let ALL=[],status='',q='',loaded=false,loading=false,lastFocus=null,openCode='';
 const SEC=[{k:'a',t:'Aktif',em:'lagi dikerjakan ✦',f:o=>isActive(o),p:1},{k:'d',t:'Completed',em:'sudah selesai ✦',f:o=>!isActive(o),p:1}];
 $('#secs').innerHTML=SEC.map(s=>`<section class="blk" id="sec-${s.k}"><div class="top"><span>${s.t}<b id="c-${s.k}">0</b></span><em>${s.em}</em></div><div class="wrapt"><table><thead><tr><th>Kode</th><th>Nama</th><th class="md">Tema</th><th class="md">Order</th><th>Received</th><th>Status Pesanan</th></tr></thead><tbody id="body-${s.k}"></tbody></table><div id="state-${s.k}"></div></div><nav class="pager" id="pager-${s.k}" aria-label="Halaman ${s.t}"></nav></section>`).join('');
 // Ambil daftar pesanan dari respon API; toleran terhadap nama field lain / format string.
-const ITEM_KEYS=['items','item','pesanan','order','orders','menu','menus','themes','tema','reading','readings'];
+const ITEM_KEYS=['items','item','pesanan','menu','menus','reading','readings'];
 function itemsOf(o){let v;for(const k of ITEM_KEYS){const x=o[k];if(Array.isArray(x)&&x.length||typeof x==='string'&&x.trim()){v=x;break}}
- if(v==null)v=Object.values(o).find(x=>Array.isArray(x)&&x.length);if(v==null)return[];
+ if(v==null)return[];
  if(typeof v==='string')v=v.split(/\s*[,;|\n]\s*/);
  return(Array.isArray(v)?v:[v]).map(x=>x&&typeof x==='object'?(x.label||x.name||x.title||x.menu||''):x).map(x=>String(x).trim()).filter(Boolean)}
+const slug=t=>String(t).toLowerCase().replace(/[^a-z]/g,'');
 const note=()=>{try{parent.postMessage({omk:document.documentElement.scrollHeight},'*')}catch(e){}};
 new ResizeObserver(note).observe(document.body);
 
@@ -153,7 +158,7 @@ const fmtDate=s=>s?new Date(s+'T00:00:00+07:00').toLocaleDateString('id-ID',{day
 const isActive=o=>o.status==='received'||o.status==='progress';
 function rows(sec){
   const k=q.trim().toLowerCase();
-  return ALL.filter(o=>sec.f(o)&&(!status||o.status===status)&&(!k||[o.code,o.name,o.platform,o.contact,o.email,o.items.join(' '),themes(o.items).join(' ')].join(' ').toLowerCase().includes(k)));
+  return ALL.filter(o=>sec.f(o)&&(!status||o.status===status)&&(!k||[o.code,o.name,o.platform,o.contact,o.email,o.items.join(' '),(o.tema||[]).join(' ')].join(' ').toLowerCase().includes(k)));
 }   // ALL sudah diurutkan terbaru di atas (n menurun), jadi tiap tabel terbaru di paling atas
 
 // Kolom Tema: nama grup dari menus.json (General, Self Development, Romance, Spiritual, Surprise Me!), tanpa jumlah pertanyaan/kartu.
@@ -161,13 +166,12 @@ function rows(sec){
 const THEMES=['spiritual','bazi','romance','general'],THEME_RE=new RegExp(THEMES.join('|'),'i');
 let MAP=[];
 function buildMap(c){MAP=[];((c&&c.groups)||[]).forEach(g=>g.cats.forEach(k=>k.items.forEach(i=>MAP.push([String(i.name).toLowerCase(),g.name.split(',')[0].trim()]))));MAP.sort((a,b)=>b[0].length-a[0].length)}
-function themes(items){const out=[];(items||[]).forEach(l=>{const raw=String(l),low=raw.toLowerCase(),s=raw.replace(/\s*\([^)]*\)/g,'').trim(),
- h=MAP.find(m=>low.startsWith(m[0]))||MAP.find(m=>low.includes(m[0])),t=s.match(THEME_RE),v=h?h[1]:t?t[0]:s;
- if(v&&!out.some(x=>x.toLowerCase()===v.toLowerCase()))out.push(v)});return out}
+function themeOf(l){const raw=String(l),low=raw.toLowerCase(),s=raw.replace(/\s*\([^)]*\)/g,'').trim(),h=MAP.find(m=>low.startsWith(m[0]))||MAP.find(m=>low.includes(m[0])),t=s.match(THEME_RE);return h?h[1]:t?t[0]:s}
+function themes(items){const out=[];(items||[]).forEach(l=>{const v=themeOf(l);if(v&&!out.some(x=>x.toLowerCase()===v.toLowerCase()))out.push(v)});return out}
 function tr(o){
-  const tg=themes(o.items),tags=tg.length?tg.map(i=>`<span class="tg">${esc(i)}</span>`).join(''):'—';
-  return `<tr tabindex="0" data-n="${o.n}"><td class="code">${esc(o.code||'—')}</td><td class="nm"><div class="nmw">${esc(o.name)}<div class="sm"><div class="th">${tags}</div><div class="sd">Order: ${esc(fmtDate(o.orderDate))}</div></div></div></td>
-<td class="md"><div class="th">${tags}</div></td>
+  const tg=o.tema||[],tags=tg.length?tg.map(i=>`<span class="tg" data-t="${slug(i)}">${esc(i)}</span>`).join(''):'—',thw=`<div class="th${tg.length>=3?' col':''}">${tags}</div>`;
+  return `<tr tabindex="0" data-n="${o.n}"><td class="code">${esc(o.code||'—')}</td><td class="nm"><div class="nmw">${esc(o.name)}<div class="sm">${thw}<div class="sd">Order: ${esc(fmtDate(o.orderDate))}</div></div></div></td>
+<td class="md">${thw}</td>
 <td class="md dt">${esc(fmtDate(o.orderDate))}</td><td class="dt">${esc(fmtDate(o.deadline))}</td><td><span class="badge s-${esc(o.status)}">${esc(ST[o.status]||o.status)}</span></td></tr>`;
 }
 function pager(sec,pages){
@@ -203,8 +207,7 @@ async function load(){
     const r=await fetch(window.API_URL+(window.API_URL.includes('?')?'&':'?')+'action=tracker&t='+Date.now(),{cache:'no-store'});
     const j=await r.json();
     if(!j||!j.ok||!Array.isArray(j.orders))throw new Error('Data order belum bisa dibaca.');
-    ALL=j.orders.map(o=>Object.assign({},o,{items:itemsOf(o)})).sort((a,b)=>b.n-a.n);loaded=true;
-    if(ALL.length&&!ALL.some(o=>o.items.length))console.warn('Tracker: daftar pesanan kosong di semua order. Field yang ada:',Object.keys(j.orders[0]));
+    ALL=j.orders.map(o=>{const it=itemsOf(o),tm=Array.isArray(o.themes)&&o.themes.length?o.themes.map(x=>String(x).trim()).filter(Boolean):themes(it);return Object.assign({},o,{items:it,tema:tm.filter((x,i)=>tm.findIndex(y=>y.toLowerCase()===x.toLowerCase())===i)})}).sort((a,b)=>b.n-a.n);loaded=true;
     $('#lastUpdate').textContent=new Date(j.updated).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Jakarta'}).replace('.',':')+' WIB';
     render();
     if(openCode){const o=ALL.find(x=>String(x.code).toLowerCase()===openCode.toLowerCase());openCode='';if(o)openModal(o)}
@@ -219,7 +222,8 @@ function openModal(o){
   $('#mClient').textContent=o.visit==='Sudah pernah.'?'It\u2019s nice to see you around again. Welcome back, the cards missed you! ✦':o.visit==='Belum pernah.'?'Welcome to your first journey together! ✦':'';
   $('#mCode').textContent=o.code||'—';$('#mPlatform').textContent=o.platform||'—';$('#mContact').textContent=o.contact||'—';$('#mEmail').textContent=o.email||'—';
   $('#mOrder').textContent=fmtDate(o.orderDate);$('#mRecv').textContent=fmtDate(o.deadline);
-  $('#mThemes').innerHTML=(o.items&&o.items.length?o.items:['—']).map(i=>`<div class="tm">${esc(i)}</div>`).join('');
+  const grp={},tl=(o.tema||[]).slice();(o.items||[]).forEach(m=>{const t=themeOf(m),k=t.toLowerCase();(grp[k]=grp[k]||[]).push(m);if(!tl.some(x=>x.toLowerCase()===k))tl.push(t)});
+  $('#mThemes').innerHTML=tl.length?tl.map(t=>`<div class="tm"><span class="tg" data-t="${slug(t)}">${esc(t)}</span>${(grp[t.toLowerCase()]||[]).map(m=>`<div class="mn">${esc(m)}</div>`).join('')}</div>`).join(''):'<div class="tm">—</div>';
   $('#copied').hidden=true;$('#modal').classList.add('open');$('#modal').setAttribute('aria-hidden','false');$('#mClose').focus();
 }
 function closeModal(){$('#modal').classList.remove('open');$('#modal').setAttribute('aria-hidden','true');cur=null;if(lastFocus&&lastFocus.focus)lastFocus.focus()}
