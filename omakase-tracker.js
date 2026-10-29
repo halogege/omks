@@ -2,11 +2,11 @@
    Dipasang lewat: <script src="https://DOMAIN-VERCEL/omakase-tracker.js"></script>
    Tracker muncul di elemen dengan id="omakase-tracker".
    Data: menus.json dan config.js (API_URL) dari domain yang sama.
-   Opsional di tag script: data-width="1152" data-scale="1" data-bg="transparent" data-theme="light" data-api="https://.../exec" */
+   Opsional di tag script: data-width="1152" data-scale="1" data-bg="transparent" data-theme="light" data-api="https://.../exec" data-anchor="tracker" */
 (function () {
   "use strict";
   var CONTAINER_ID = "omakase-tracker";
-  var BASE = "", WIDTH = 1152, BG = "", SCALE = 1, API_ATTR = "", AUTODARK = true;
+  var BASE = "", WIDTH = 1152, BG = "", SCALE = 1, API_ATTR = "", AUTODARK = true, ANCHOR = "tracker";
   try {
     var cs = document.currentScript || document.querySelector('script[src*="omakase-tracker.js"]');
     BASE = new URL(cs.src).origin;
@@ -15,6 +15,7 @@
     var ds = parseFloat(cs.getAttribute("data-scale")); if (ds >= 0.5 && ds <= 1.5) SCALE = ds;
     API_ATTR = cs.getAttribute("data-api") || "";
     if (cs.getAttribute("data-theme") === "light") AUTODARK = false;
+    if (cs.getAttribute("data-anchor") != null) ANCHOR = cs.getAttribute("data-anchor").replace(/[^A-Za-z0-9_-]/g, "");   // ID section Carrd tempat tracker; dipakai di Share Link (?kode=...#tracker)
   } catch (e) { BASE = ""; }
 
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
@@ -80,7 +81,7 @@ h1{font:900 clamp(38.4px,11vw,60.8px)/.9 Archivo,sans-serif;letter-spacing:-.045
 .hl{background:linear-gradient(var(--hi),var(--hi)) 0 92%/100% .45em no-repeat;color:var(--fg)}
 .sub{margin:10px 0 0;font:700 15.2px 'Fuzzy Bubbles',Archivo,cursive;color:var(--mute)}
 .ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-input[type=search],select{border:2px solid var(--fg);border-radius:2px;background:var(--card);color:var(--fg);font:500 15.2px Archivo,sans-serif;padding:10px 12px;min-height:44px;-webkit-appearance:none;appearance:none}
+input[type=search],input[type=password],select{border:2px solid var(--fg);border-radius:2px;background:var(--card);color:var(--fg);font:500 15.2px Archivo,sans-serif;padding:10px 12px;min-height:44px;-webkit-appearance:none;appearance:none}
 select{background-image:linear-gradient(45deg,transparent 50%,var(--fg) 50%),linear-gradient(135deg,var(--fg) 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 12px) 55%;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px}
 input[type=search]{width:240px;max-width:100%}
 input:focus-visible,select:focus-visible,button:focus-visible,tr[tabindex]:focus-visible{outline:3px solid var(--hi);outline-offset:1px}
@@ -127,8 +128,10 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
 .btn{display:inline-flex;justify-content:space-between;align-items:center;gap:14px;border:0;border-radius:2px;background:var(--hi);color:#000144;padding:12px 16px;font:900 12.8px Archivo,sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;min-height:48px;transition:background .2s}
 .btn:hover:not(:disabled){background:#fff;outline:2px solid #000144}
 .note{margin:24px 0 0;font-size:13.12px;color:var(--mute);max-width:70ch}
-#modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,1,68,.55)}
-#modal.open{display:flex}
+#modal,#amodal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,1,68,.55)}
+#modal.open,#amodal.open{display:flex}
+.admbar{display:flex;justify-content:space-between;align-items:center;gap:10px;border:2px dashed var(--fg);border-radius:2px;padding:8px 12px;margin:0 0 12px;font-size:13px;font-weight:700;background:var(--card)}
+.aerr{color:var(--red);font-weight:700;font-size:14px;margin:10px 0 0}.dlg .il{margin-top:6px}
 .dlg{position:relative;width:100%;max-width:640px;max-height:90vh;overflow:auto;background:var(--card);color:var(--fg);border:2px solid var(--fg);border-radius:3px;padding:22px;box-shadow:6px 6px 0 var(--hi)}
 .x{position:absolute;right:12px;top:10px;border:0;background:none;color:var(--mute);font-size:19.2px;cursor:pointer;padding:6px 10px}.x:hover{color:var(--fg)}
 .mh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-right:32px;padding-bottom:10px;margin-bottom:10px;border-bottom:2px solid var(--fg)}
@@ -155,8 +158,11 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
     <input id="q" type="search" placeholder="Cari kode, nama, platform…" autocomplete="off" maxlength="40" aria-label="Cari order">
     <select id="statusFilter" aria-label="Saring status"></select>
     <button class="icon" id="dark" type="button" aria-label="Ganti mode gelap" title="Mode gelap">☾</button>
+    <button class="icon" id="admin" type="button" aria-label="Admin" title="Masuk admin">🔒</button>
   </div>
 </header>
+
+<div class="admbar" id="admbar" hidden><span>Mode admin aktif: nama, kontak, dan email tampil lengkap.</span><button class="link" id="admout" type="button">Keluar</button></div>
 
 <div class="bar"><span id="count"></span><button class="link" id="refresh" type="button">Perbarui sekarang</button></div>
 
@@ -165,7 +171,14 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
 <p class="note">Note: Status bersifat view-only dan diperbarui oleh Admin. Demi privasi, nama, kontak, dan email disensor: hanya huruf depan dan belakang tiap kata yang terlihat. Klik baris untuk melihat detail. Urutan: order terbaru di paling atas.</p>
 </main>
 <div class="strip end"></div></div>`;
-  var MODAL_HTML = `<div class="omk"><div id="modal" aria-hidden="true">
+  var MODAL_HTML = `<div class="omk"><div id="amodal" aria-hidden="true"><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="aTitle" style="max-width:380px">
+    <button class="x" id="aClose" type="button" aria-label="Tutup">✕</button>
+    <div class="mh"><h3 id="aTitle">Masuk admin</h3></div>
+    <label class="il" for="aPw">Password</label>
+    <input id="aPw" type="password" autocomplete="current-password" maxlength="200" style="width:100%;margin-top:6px">
+    <p class="aerr" id="aErr" role="alert" hidden></p>
+    <div class="mf"><button class="btn" id="aGo" type="button">Masuk</button></div>
+  </div></div><div id="modal" aria-hidden="true">
   <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="mName">
     <button class="x" id="mClose" type="button" aria-label="Tutup">✕</button>
     <div class="mh"><h3 id="mName"></h3><span id="mStatus" class="badge"></span></div>
@@ -272,16 +285,36 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
       if(!loaded)$('#state-a').innerHTML='<div class="msg"><p>Memuat data order…</p></div>';
       try{
         if(!API||/GANTI/.test(API))throw new Error('Tracker belum tersambung ke data order.');
-        const r=await fetch(API+(API.includes('?')?'&':'?')+'action=tracker&t='+Date.now(),{cache:'no-store'});
-        const j=await r.json();
+        let j=null;
+        if(TOKEN){const ra=await fetch(API,{method:'POST',headers:{'content-type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'admin_data',token:TOKEN})});j=await ra.json().catch(()=>null);if(j&&j.error==='expired'){setAdmin('');j=null;$('#state-a').innerHTML='<div class="msg"><p class="err">Sesi admin habis. Masuk lagi.</p></div>'}}
+        if(!j){const r=await fetch(API+(API.includes('?')?'&':'?')+'action=tracker&t='+Date.now(),{cache:'no-store'});j=await r.json()}
         if(!j||!j.ok||!Array.isArray(j.orders))throw new Error('Data order belum bisa dibaca.');
         ALL=j.orders.map(o=>{const it=itemsOf(o),tm=Array.isArray(o.themes)&&o.themes.length?o.themes.map(x=>String(x).trim()).filter(Boolean):themes(it);return Object.assign({},o,{items:it,tema:tm.filter((x,i)=>tm.findIndex(y=>y.toLowerCase()===x.toLowerCase())===i)})}).sort((a,b)=>b.n-a.n);loaded=true;
         $('#lastUpdate').textContent=new Date(j.updated).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Jakarta'}).replace('.',':')+' WIB';
         render();
-        if(openCode){const o=ALL.find(x=>String(x.code).toLowerCase()===openCode.toLowerCase());openCode='';if(o)openModal(o)}
+        if(openCode){const o=ALL.find(x=>String(x.code).toLowerCase()===openCode.toLowerCase());openCode='';if(o){try{host.scrollIntoView({block:'start'})}catch(e){}openModal(o)}}
       }catch(e){fail(e&&e.message&&!/fetch|json|network|load failed/i.test(e.message)?e.message:'Tidak bisa terhubung ke server. Periksa koneksi lalu coba lagi.')}
       finally{loading=false;$('#refresh').disabled=false}
     }
+    /* admin: password dicek di server (Apps Script). Browser hanya menyimpan token sesi (sessionStorage), bukan password. */
+    let TOKEN='';try{TOKEN=sessionStorage.getItem('omk-adm')||''}catch(e){}
+    function setAdmin(t){TOKEN=t||'';try{if(TOKEN)sessionStorage.setItem('omk-adm',TOKEN);else sessionStorage.removeItem('omk-adm')}catch(e){}admUi()}
+    function admUi(){$('#admin').textContent=TOKEN?'🔓':'🔒';$('#admin').title=TOKEN?'Mode admin aktif':'Masuk admin';$('#admbar').hidden=!TOKEN}
+    function openA(){$('#aErr').hidden=true;$('#aPw').value='';$('#amodal').classList.add('open');$('#amodal').setAttribute('aria-hidden','false');$('#aPw').focus()}
+    function closeA(){$('#amodal').classList.remove('open');$('#amodal').setAttribute('aria-hidden','true');$('#aPw').value='';$('#admin').focus()}
+    async function loginA(){const pw=$('#aPw').value;if(!pw)return;const b=$('#aGo'),er=$('#aErr');b.disabled=true;er.hidden=true;
+      try{const r=await fetch(API,{method:'POST',headers:{'content-type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'admin_login',password:pw})}),j=await r.json();
+        if(!j||!j.ok||!j.token)throw new Error(j&&j.message||'Gagal masuk. Coba lagi.');
+        $('#aPw').value='';setAdmin(j.token);closeA();loaded=false;load()}
+      catch(e){er.textContent=e&&e.message&&!/fetch|json|network|load failed/i.test(e.message)?e.message:'Tidak bisa terhubung ke server.';er.hidden=false;$('#aPw').select()}
+      finally{b.disabled=false}}
+    async function logoutA(){const t=TOKEN;setAdmin('');try{await fetch(API,{method:'POST',headers:{'content-type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'admin_logout',token:t})})}catch(e){}loaded=false;load()}
+    $('#admin').addEventListener('click',()=>{if(TOKEN){if(confirm('Keluar dari mode admin?'))logoutA()}else openA()});
+    $('#admout').addEventListener('click',logoutA);
+    $('#aClose').addEventListener('click',closeA);$('#aGo').addEventListener('click',loginA);
+    $('#amodal').addEventListener('click',e=>{if(e.target.id==='amodal')closeA()});
+    $('#aPw').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();loginA()}else if(e.key==='Escape')closeA()});
+    admUi();
     /* modal */
     let cur=null;
     function openModal(o){
@@ -299,7 +332,7 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
     $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cur)closeModal()});
     $('#share').addEventListener('click',async()=>{
-      if(!cur||!cur.code)return;const url=location.origin+location.pathname+'?kode='+encodeURIComponent(cur.code);
+      if(!cur||!cur.code)return;const url=location.origin+location.pathname+'?kode='+encodeURIComponent(cur.code)+(ANCHOR?'#'+ANCHOR:'');
       try{await navigator.clipboard.writeText(url);$('#copied').hidden=false}catch(e){prompt('Salin link ini:',url)}
     });
     /* events */
