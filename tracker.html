@@ -41,6 +41,10 @@ input:focus-visible,select:focus-visible,button:focus-visible,tr[tabindex]:focus
 .tab:hover{background:var(--hi);color:#000144}
 .tab[aria-selected=true]{background:var(--fg);color:var(--bg)}
 .tab b{font-weight:900;opacity:.65;margin-left:4px}
+.blk{margin-bottom:34px}
+.blk .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding-bottom:8px;margin-bottom:12px;border-bottom:2px solid var(--fg);font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.blk .top>span{font:900 1.5rem/1.1 Archivo,sans-serif;letter-spacing:-.02em}.blk .top b{margin-left:6px;opacity:.55}
+.blk .top em{font:700 .95rem 'Fuzzy Bubbles',Archivo,cursive;letter-spacing:0;text-transform:none;color:var(--mute)}
 .bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 10px;font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 .link{border:0;background:none;padding:6px 0;font:700 .72rem Archivo,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--fg);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .wrapt{overflow-x:auto;border:2px solid var(--fg);border-radius:3px;background:var(--card);box-shadow:6px 6px 0 var(--sh)}
@@ -102,26 +106,9 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
   </div>
 </header>
 
-<div class="ctl" style="margin-bottom:12px">
-  <div class="tabs" role="tablist" aria-label="Tampilan tabel" id="tabs">
-    <button class="tab" role="tab" data-v="all" aria-selected="true">Semua <b id="n-all">0</b></button>
-    <button class="tab" role="tab" data-v="active" aria-selected="false">Aktif <b id="n-active">0</b></button>
-    <button class="tab" role="tab" data-v="done" aria-selected="false">Completed <b id="n-done">0</b></button>
-  </div>
-</div>
-
 <div class="bar"><span id="count"></span><button class="link" id="refresh" type="button">Perbarui sekarang</button></div>
 
-<div class="wrapt">
-  <table>
-    <thead><tr>
-      <th>Kode</th><th>Nama</th><th class="md">Tema</th><th class="md">Order</th><th>Received</th><th>Status Pesanan</th>
-    </tr></thead>
-    <tbody id="body"></tbody>
-  </table>
-  <div id="state"></div>
-</div>
-<nav class="pager" id="pager" aria-label="Halaman"></nav>
+<div id="secs"></div>
 
 <p class="note">Note: Status bersifat view-only dan diperbarui oleh Admin. Demi privasi, nama, kontak, dan email disensor: hanya huruf depan dan belakang tiap kata yang terlihat. Klik baris untuk melihat detail. Urutan: order terbaru di paling atas.</p>
 </main>
@@ -150,17 +137,24 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
 <script>
 const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const ST={received:'Form Received',progress:'On Progress',delivered:'Delivered',cancelled:'Cancelled'},PAGE=15,REFRESH_MS=60000;
-let ALL=[],view='all',status='',q='',page=1,loaded=false,loading=false,lastFocus=null,openCode='';
+let ALL=[],status='',q='',loaded=false,loading=false,lastFocus=null,openCode='';
+const SEC=[{k:'a',t:'Aktif',em:'lagi dikerjakan ✦',f:o=>isActive(o),p:1},{k:'d',t:'Completed',em:'sudah selesai ✦',f:o=>!isActive(o),p:1}];
+$('#secs').innerHTML=SEC.map(s=>`<section class="blk" id="sec-${s.k}"><div class="top"><span>${s.t}<b id="c-${s.k}">0</b></span><em>${s.em}</em></div><div class="wrapt"><table><thead><tr><th>Kode</th><th>Nama</th><th class="md">Tema</th><th class="md">Order</th><th>Received</th><th>Status Pesanan</th></tr></thead><tbody id="body-${s.k}"></tbody></table><div id="state-${s.k}"></div></div><nav class="pager" id="pager-${s.k}" aria-label="Halaman ${s.t}"></nav></section>`).join('');
+// Ambil daftar pesanan dari respon API; toleran terhadap nama field lain / format string.
+const ITEM_KEYS=['items','item','pesanan','order','orders','menu','menus','themes','tema','reading','readings'];
+function itemsOf(o){let v;for(const k of ITEM_KEYS){const x=o[k];if(Array.isArray(x)&&x.length||typeof x==='string'&&x.trim()){v=x;break}}
+ if(v==null)v=Object.values(o).find(x=>Array.isArray(x)&&x.length);if(v==null)return[];
+ if(typeof v==='string')v=v.split(/\s*[,;|\n]\s*/);
+ return(Array.isArray(v)?v:[v]).map(x=>x&&typeof x==='object'?(x.label||x.name||x.title||x.menu||''):x).map(x=>String(x).trim()).filter(Boolean)}
 const note=()=>{try{parent.postMessage({omk:document.documentElement.scrollHeight},'*')}catch(e){}};
 new ResizeObserver(note).observe(document.body);
 
 const fmtDate=s=>s?new Date(s+'T00:00:00+07:00').toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric',timeZone:'Asia/Jakarta'}):'—';
 const isActive=o=>o.status==='received'||o.status==='progress';
-const inView=o=>view==='all'||(view==='active'&&isActive(o))||(view==='done'&&o.status==='delivered');
-function rows(){
+function rows(sec){
   const k=q.trim().toLowerCase();
-  return ALL.filter(o=>inView(o)&&(view!=='all'||!status||o.status===status)&&(!k||[o.code,o.name,o.platform,o.contact,o.email,(o.items||[]).join(' '),themes(o.items).join(' ')].join(' ').toLowerCase().includes(k)));
-}   // ALL sudah diurutkan terbaru di atas (n menurun), jadi semua tabel, termasuk Completed, terbaru di paling atas
+  return ALL.filter(o=>sec.f(o)&&(!status||o.status===status)&&(!k||[o.code,o.name,o.platform,o.contact,o.email,o.items.join(' '),themes(o.items).join(' ')].join(' ').toLowerCase().includes(k)));
+}   // ALL sudah diurutkan terbaru di atas (n menurun), jadi tiap tabel terbaru di paling atas
 
 // Kolom Tema: nama grup dari menus.json (General, Self Development, Romance, Spiritual, Surprise Me!), tanpa jumlah pertanyaan/kartu.
 // Label order dicocokkan ke nama menu di menus.json. Kalau tidak ketemu, dipakai kata tema di THEMES atau nama menu tanpa "(...)".
@@ -176,43 +170,41 @@ function tr(o){
 <td class="md"><div class="th">${tags}</div></td>
 <td class="md dt">${esc(fmtDate(o.orderDate))}</td><td class="dt">${esc(fmtDate(o.deadline))}</td><td><span class="badge s-${esc(o.status)}">${esc(ST[o.status]||o.status)}</span></td></tr>`;
 }
-function pager(total,pages){
-  const el=$('#pager');if(pages<=1){el.innerHTML='';return}
+function pager(sec,pages){
+  const el=$('#pager-'+sec.k),page=sec.p,d=`data-s="${sec.k}"`;if(pages<=1){el.innerHTML='';return}
   const set=new Set([1,pages,page-1,page,page+1]),list=[...set].filter(p=>p>=1&&p<=pages).sort((a,b)=>a-b);
-  let h=`<button class="pg" data-p="${page-1}" ${page<=1?'disabled':''} aria-label="Sebelumnya">‹</button>`,prev=0;
-  list.forEach(p=>{if(prev&&p-prev>1)h+='<span class="gap">…</span>';h+=`<button class="pg" data-p="${p}" ${p===page?'aria-current="page"':''}>${p}</button>`;prev=p});
-  el.innerHTML=h+`<button class="pg" data-p="${page+1}" ${page>=pages?'disabled':''} aria-label="Berikutnya">›</button>`;
+  let h=`<button class="pg" ${d} data-p="${page-1}" ${page<=1?'disabled':''} aria-label="Sebelumnya">‹</button>`,prev=0;
+  list.forEach(p=>{if(prev&&p-prev>1)h+='<span class="gap">…</span>';h+=`<button class="pg" ${d} data-p="${p}" ${p===page?'aria-current="page"':''}>${p}</button>`;prev=p});
+  el.innerHTML=h+`<button class="pg" ${d} data-p="${page+1}" ${page>=pages?'disabled':''} aria-label="Berikutnya">›</button>`;
 }
 function counts(){
-  const c={all:ALL.length,active:ALL.filter(isActive).length,done:ALL.filter(o=>o.status==='delivered').length};
-  for(const k in c)$('#n-'+k).textContent=c[k];
-  const sel=$('#statusFilter'),has=ALL.some(o=>o.status==='cancelled'),keys=['received','progress','delivered'].concat(has?['cancelled']:[]);
+  const sel=$('#statusFilter'),keys=['received','progress','delivered'].concat(ALL.some(o=>o.status==='cancelled')?['cancelled']:[]);
   if(sel.dataset.k!==keys.join()){sel.innerHTML='<option value="">All Status</option>'+keys.map(s=>`<option value="${s}">${ST[s]}</option>`).join('');sel.dataset.k=keys.join();sel.value=status}
-  sel.hidden=view!=='all';
 }
 function render(){
-  counts();document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',String(t.dataset.v===view)));
-  if(!loaded)return;
-  const r=rows(),pages=Math.max(1,Math.ceil(r.length/PAGE));page=Math.min(page,pages);
-  $('#count').textContent=r.length+' order';
-  $('#body').innerHTML=r.slice((page-1)*PAGE,page*PAGE).map(tr).join('');
-  $('#state').innerHTML=r.length?'':`<div class="msg"><p><b>${ALL.length?'Tidak ada order yang cocok.':'Belum ada order.'}</b></p><p>${ALL.length?'Periksa lagi kode order (format OMK-0091) atau ganti filter.':'Order yang masuk akan muncul di sini.'}</p></div>`;
-  pager(r.length,pages);note();
+  counts();if(!loaded)return;let tot=0;
+  SEC.forEach(sec=>{const r=rows(sec),pages=Math.max(1,Math.ceil(r.length/PAGE));sec.p=Math.min(sec.p,pages);tot+=r.length;
+    $('#c-'+sec.k).textContent=r.length;
+    $('#body-'+sec.k).innerHTML=r.slice((sec.p-1)*PAGE,sec.p*PAGE).map(tr).join('');
+    $('#state-'+sec.k).innerHTML=r.length?'':`<div class="msg"><p><b>${ALL.some(sec.f)?'Tidak ada order yang cocok.':sec.k==='a'?'Tidak ada order aktif.':'Belum ada order selesai.'}</b></p></div>`;
+    pager(sec,pages)});
+  $('#count').textContent=tot+' order';note();
 }
 function fail(msg){
   if(loaded)return;
-  $('#body').innerHTML='';$('#pager').innerHTML='';$('#count').textContent='';$('#lastUpdate').textContent='gagal memuat';
-  $('#state').innerHTML=`<div class="msg"><p class="err">${esc(msg)}</p><button class="btn" type="button" id="retry">Coba lagi</button></div>`;note();
+  SEC.forEach(x=>{$('#body-'+x.k).innerHTML='';$('#pager-'+x.k).innerHTML='';$('#state-'+x.k).innerHTML='';$('#c-'+x.k).textContent=''});$('#count').textContent='';$('#lastUpdate').textContent='gagal memuat';
+  $('#state-a').innerHTML=`<div class="msg"><p class="err">${esc(msg)}</p><button class="btn" type="button" id="retry">Coba lagi</button></div>`;note();
 }
 async function load(){
   if(loading)return;loading=true;$('#refresh').disabled=true;
-  if(!loaded)$('#state').innerHTML='<div class="msg"><p>Memuat data order…</p></div>';
+  if(!loaded)$('#state-a').innerHTML='<div class="msg"><p>Memuat data order…</p></div>';
   try{
     if(!window.API_URL||/GANTI/.test(window.API_URL))throw new Error('Tracker belum tersambung ke data order.');
     const r=await fetch(window.API_URL+(window.API_URL.includes('?')?'&':'?')+'action=tracker&t='+Date.now(),{cache:'no-store'});
     const j=await r.json();
     if(!j||!j.ok||!Array.isArray(j.orders))throw new Error('Data order belum bisa dibaca.');
-    ALL=j.orders.slice().sort((a,b)=>b.n-a.n);loaded=true;
+    ALL=j.orders.map(o=>Object.assign({},o,{items:itemsOf(o)})).sort((a,b)=>b.n-a.n);loaded=true;
+    if(ALL.length&&!ALL.some(o=>o.items.length))console.warn('Tracker: daftar pesanan kosong di semua order. Field yang ada:',Object.keys(j.orders[0]));
     $('#lastUpdate').textContent=new Date(j.updated).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Jakarta'}).replace('.',':')+' WIB';
     render();
     if(openCode){const o=ALL.find(x=>String(x.code).toLowerCase()===openCode.toLowerCase());openCode='';if(o)openModal(o)}
@@ -240,12 +232,11 @@ $('#share').addEventListener('click',async()=>{
 });
 /* events */
 const openRow=t=>{const o=ALL.find(x=>String(x.n)===t.dataset.n);if(o)openModal(o)};
-$('#body').addEventListener('click',e=>{const t=e.target.closest('tr[data-n]');if(t)openRow(t)});
-$('#body').addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const t=e.target.closest('tr[data-n]');if(!t)return;e.preventDefault();openRow(t)});
-$('#q').addEventListener('input',e=>{q=e.target.value;page=1;render()});
-$('#statusFilter').addEventListener('change',e=>{status=e.target.value;page=1;render()});
-$('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;view=b.dataset.v;page=1;render()});
-$('#pager').addEventListener('click',e=>{const b=e.target.closest('[data-p]');if(!b||b.disabled)return;page=+b.dataset.p;render();scrollTo({top:0})});
+$('#secs').addEventListener('click',e=>{const t=e.target.closest('tr[data-n]');if(t)return openRow(t);
+  const b=e.target.closest('[data-p]');if(!b||b.disabled)return;const sc=SEC.find(x=>x.k===b.dataset.s);if(sc){sc.p=+b.dataset.p;render();$('#sec-'+sc.k).scrollIntoView()}});
+$('#secs').addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const t=e.target.closest('tr[data-n]');if(!t)return;e.preventDefault();openRow(t)});
+$('#q').addEventListener('input',e=>{q=e.target.value;SEC.forEach(x=>x.p=1);render()});
+$('#statusFilter').addEventListener('change',e=>{status=e.target.value;SEC.forEach(x=>x.p=1);render()});
 $('#refresh').addEventListener('click',load);
 document.addEventListener('click',e=>{if(e.target.id==='retry')load()});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&loaded)load()});
