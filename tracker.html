@@ -50,7 +50,8 @@ th{padding:12px;text-align:left;font-weight:800;font-size:.68rem;letter-spacing:
 td{padding:12px;border-top:1px solid var(--line);vertical-align:top}
 tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var(--hover)}
 .code{font-weight:900;white-space:nowrap;letter-spacing:-.01em}
-.nm{font-weight:700;word-break:break-word}
+.nm{font-weight:700}
+.nmw{width:210px;white-space:normal;overflow-wrap:anywhere;word-break:break-word}@media(max-width:560px){.nmw{width:140px}}
 .th{display:flex;flex-wrap:wrap;gap:4px}
 .tg{display:inline-block;padding:2px 8px;border:2px solid var(--fg);border-radius:2px;background:var(--lilac);font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
 .dt{white-space:nowrap}
@@ -157,16 +158,20 @@ const isActive=o=>o.status==='received'||o.status==='progress';
 const inView=o=>view==='all'||(view==='active'&&isActive(o))||(view==='done'&&o.status==='delivered');
 function rows(){
   const k=q.trim().toLowerCase();
-  return ALL.filter(o=>inView(o)&&(view!=='all'||!status||o.status===status)&&(!k||[o.code,o.name,o.platform,o.contact,o.email,(o.items||[]).join(' ')].join(' ').toLowerCase().includes(k)));
+  return ALL.filter(o=>inView(o)&&(view!=='all'||!status||o.status===status)&&(!k||[o.code,o.name,o.platform,o.contact,o.email,(o.items||[]).join(' '),themes(o.items).join(' ')].join(' ').toLowerCase().includes(k)));
 }   // ALL sudah diurutkan terbaru di atas (n menurun), jadi semua tabel, termasuk Completed, terbaru di paling atas
 
-// Kolom Tema: ambil nama tema saja (Spiritual, Bazi, Romance, General, dst), tanpa jumlah pertanyaan/kartu.
-// Tambah tema baru di daftar ini kalau ada; yang tidak ada di daftar otomatis dipakai nama menunya tanpa kurung "(...)".
+// Kolom Tema: nama grup dari menus.json (General, Self Development, Romance, Spiritual, Surprise Me!), tanpa jumlah pertanyaan/kartu.
+// Label order dicocokkan ke nama menu di menus.json. Kalau tidak ketemu, dipakai kata tema di THEMES atau nama menu tanpa "(...)".
 const THEMES=['spiritual','bazi','romance','general'],THEME_RE=new RegExp(THEMES.join('|'),'i');
-function themes(items){const out=[];(items||[]).forEach(l=>{const s=String(l).replace(/\s*\([^)]*\)/g,'').trim(),m=s.match(THEME_RE),v=m?m[0]:s;if(v&&!out.some(x=>x.toLowerCase()===v.toLowerCase()))out.push(v)});return out}
+let MAP=[];
+function buildMap(c){MAP=[];((c&&c.groups)||[]).forEach(g=>g.cats.forEach(k=>k.items.forEach(i=>MAP.push([String(i.name).toLowerCase(),g.name.split(',')[0].trim()]))));MAP.sort((a,b)=>b[0].length-a[0].length)}
+function themes(items){const out=[];(items||[]).forEach(l=>{const raw=String(l),low=raw.toLowerCase(),s=raw.replace(/\s*\([^)]*\)/g,'').trim(),
+ h=MAP.find(m=>low.startsWith(m[0]))||MAP.find(m=>low.includes(m[0])),t=s.match(THEME_RE),v=h?h[1]:t?t[0]:s;
+ if(v&&!out.some(x=>x.toLowerCase()===v.toLowerCase()))out.push(v)});return out}
 function tr(o){
   const tg=themes(o.items);
-  return `<tr tabindex="0" data-n="${o.n}"><td class="code">${esc(o.code||'—')}</td><td class="nm">${esc(o.name)}</td>
+  return `<tr tabindex="0" data-n="${o.n}"><td class="code">${esc(o.code||'—')}</td><td class="nm"><div class="nmw">${esc(o.name)}</div></td>
 <td class="md"><div class="th">${tg.length?tg.map(i=>`<span class="tg">${esc(i)}</span>`).join(''):'—'}</div></td>
 <td class="md dt">${esc(fmtDate(o.orderDate))}</td><td class="dt">${esc(fmtDate(o.deadline))}</td><td><span class="badge s-${esc(o.status)}">${esc(ST[o.status]||o.status)}</span></td></tr>`;
 }
@@ -218,7 +223,7 @@ let cur=null;
 function openModal(o){
   cur=o;lastFocus=document.activeElement;
   $('#mName').textContent=o.name;const b=$('#mStatus');b.textContent=ST[o.status]||o.status;b.className='badge s-'+o.status;
-  $('#mClient').textContent=o.visit==='Sudah pernah.'?'Klien lama (pernah berkunjung)':o.visit==='Belum pernah.'?'Klien baru (kunjungan pertama)':'';
+  $('#mClient').textContent=o.visit==='Sudah pernah.'?'It\u2019s nice to see you around again. Welcome back, the cards missed you! ✦':o.visit==='Belum pernah.'?'Welcome to your first journey together! ✦':'';
   $('#mCode').textContent=o.code||'—';$('#mPlatform').textContent=o.platform||'—';$('#mContact').textContent=o.contact||'—';$('#mEmail').textContent=o.email||'—';
   $('#mOrder').textContent=fmtDate(o.orderDate);$('#mRecv').textContent=fmtDate(o.deadline);
   $('#mThemes').innerHTML=(o.items&&o.items.length?o.items:['—']).map(i=>`<div class="tm">${esc(i)}</div>`).join('');
@@ -249,6 +254,7 @@ $('#dark').addEventListener('click',()=>{const d=document.documentElement.classL
 theme();
 // tautan langsung: tracker?kode=OMK-0091  (membuka detail order itu)
 (function(){const v=(new URLSearchParams(location.search).get('kode')||location.hash.slice(1)||'').slice(0,40);if(v){q=v;$('#q').value=v;openCode=v}})();
+fetch('menus.json',{cache:'no-cache'}).then(r=>r.json()).then(c=>{buildMap(c);if(loaded)render()}).catch(()=>{});
 load();
 </script>
 </body>
