@@ -11,6 +11,7 @@
    "cats": [
     {
      "name": "Question Based",
+     "theme": "Question",
      "items": [
       {
        "id": "g3",
@@ -44,6 +45,7 @@
     },
     {
      "name": "Karier & Akademik",
+     "theme": "Career",
      "items": [
       {
        "id": "karier",
@@ -70,6 +72,7 @@
     },
     {
      "name": "Social Life",
+     "theme": "Social",
      "items": [
       {
        "id": "badfeel",
