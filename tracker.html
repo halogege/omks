@@ -222,7 +222,7 @@ function openModal(o){
   $('#mClient').textContent=o.visit==='Sudah pernah.'?'It\u2019s nice to see you around again. Welcome back, the cards missed you! ✦':o.visit==='Belum pernah.'?'Welcome to your first journey together! ✦':'';
   $('#mCode').textContent=o.code||'—';$('#mPlatform').textContent=o.platform||'—';$('#mContact').textContent=o.contact||'—';$('#mEmail').textContent=o.email||'—';
   $('#mOrder').textContent=fmtDate(o.orderDate);$('#mRecv').textContent=fmtDate(o.deadline);
-  const grp={},tl=(o.tema||[]).slice();(o.items||[]).forEach(m=>{const t=themeOf(m),k=t.toLowerCase();(grp[k]=grp[k]||[]).push(m);if(!tl.some(x=>x.toLowerCase()===k))tl.push(t)});
+  const grp={},tl=(o.tema||[]).slice();if(o.menus&&typeof o.menus==='object'&&!Array.isArray(o.menus))Object.keys(o.menus).forEach(t=>{grp[t.toLowerCase()]=[].concat(o.menus[t]).map(String).filter(Boolean);if(!tl.some(x=>x.toLowerCase()===t.toLowerCase()))tl.push(t)});(o.items||[]).forEach(m=>{const t=themeOf(m),k=t.toLowerCase();(grp[k]=grp[k]||[]).push(m);if(!tl.some(x=>x.toLowerCase()===k))tl.push(t)});
   $('#mThemes').innerHTML=tl.length?tl.map(t=>`<div class="tm"><span class="tg" data-t="${slug(t)}">${esc(t)}</span>${(grp[t.toLowerCase()]||[]).map(m=>`<div class="mn">${esc(m)}</div>`).join('')}</div>`).join(''):'<div class="tm">—</div>';
   $('#copied').hidden=true;$('#modal').classList.add('open');$('#modal').setAttribute('aria-hidden','false');$('#mClose').focus();
 }
