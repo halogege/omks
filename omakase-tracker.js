@@ -3,11 +3,12 @@
    Tracker muncul di elemen dengan id="omakase-tracker".
    Data: menus.json dan config.js (API_URL) dari domain yang sama.
    Opsional di tag script: data-width="1152" data-scale="1" data-bg="transparent" data-theme="light" data-api="https://.../exec" data-hash="tracker"
-   Link order: https://DOMAIN/#tracker?kode=OMK-0091 (juga bisa ?kode=OMK-0091 atau #OMK-0091). data-hash = nama anchor/section Carrd untuk tracker. */
+   Link order: https://DOMAIN/?kode=OMK-0091#tracker (juga terbaca #tracker?kode=OMK-0091 atau #OMK-0091).
+   data-hash = nama section Carrd untuk tracker (default: id section tempat container berada, atau "tracker"). */
 (function () {
   "use strict";
   var CONTAINER_ID = "omakase-tracker";
-  var BASE = "", WIDTH = 1152, BG = "", SCALE = 1, API_ATTR = "", AUTODARK = true, HASHNAME = "tracker";
+  var BASE = "", WIDTH = 1152, BG = "", SCALE = 1, API_ATTR = "", AUTODARK = true, HASHNAME = "tracker", HASH_SET = false;
   try {
     var cs = document.currentScript || document.querySelector('script[src*="omakase-tracker.js"]');
     BASE = new URL(cs.src).origin;
@@ -16,7 +17,7 @@
     var ds = parseFloat(cs.getAttribute("data-scale")); if (ds >= 0.5 && ds <= 1.5) SCALE = ds;
     API_ATTR = cs.getAttribute("data-api") || "";
     if (cs.getAttribute("data-theme") === "light") AUTODARK = false;
-    var dh = (cs.getAttribute("data-hash") || "").replace(/[^A-Za-z0-9_-]/g, ""); if (dh) HASHNAME = dh;
+    var dh = (cs.getAttribute("data-hash") || "").replace(/[^A-Za-z0-9_-]/g, ""); if (dh) { HASHNAME = dh; HASH_SET = true; }
   } catch (e) { BASE = ""; }
 
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
@@ -189,6 +190,8 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
   async function start(container) {
     injectFonts();
     var API = API_ATTR || await loadApi();
+    // Nama section Carrd tempat tracker berada (dipakai untuk pindah section saat link ?kode= dibuka)
+    if (!HASH_SET) { var sec = container.closest && container.closest("section[id]"); if (sec && /^[A-Za-z0-9_-]+$/.test(sec.id)) HASHNAME = sec.id; }
     var css = scaleCss(CSS, SCALE).replace(/__W__/g, WIDTH);
     if (BG) css += "\n:host,:host(.dark){--bg:" + BG + "}";
     var host = mountHost(container);
@@ -301,7 +304,7 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
     $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cur)closeModal()});
     $('#share').addEventListener('click',async()=>{
-      if(!cur||!cur.code)return;const url=location.origin+location.pathname+'#'+HASHNAME+'?kode='+encodeURIComponent(cur.code);
+      if(!cur||!cur.code)return;const url=location.origin+location.pathname+'?kode='+encodeURIComponent(cur.code)+'#'+HASHNAME;
       try{await navigator.clipboard.writeText(url);$('#copied').hidden=false}catch(e){prompt('Salin link ini:',url)}
     });
     /* events */
@@ -323,8 +326,11 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
     // Terima: ?kode=OMK-0091 | #tracker?kode=OMK-0091 | #OMK-0091. Hash biasa seperti #tracker diabaikan.
     function readKode(){let v='';try{const h=location.hash.slice(1),i=h.indexOf('?');v=new URLSearchParams(location.search).get('kode')||(i>-1?new URLSearchParams(h.slice(i+1)).get('kode'):'')||(i>-1?h.slice(0,i):h)||''}catch(e){}v=String(v).trim().slice(0,40);return CODE_RE.test(v)?v:''}
     function gotoKode(k,scroll){q=k;$('#q').value=k;SEC.forEach(x=>x.p=1);if(loaded){render();const o=ALL.find(x=>String(x.code).toLowerCase()===k.toLowerCase());if(o)openModal(o)}else openCode=k;if(scroll)host.scrollIntoView({behavior:'auto',block:'start'})}
-    (function(){const k=readKode();if(k){q=k;$('#q').value=k;openCode=k;if(location.hash.indexOf('?')>-1)setTimeout(()=>host.scrollIntoView({behavior:'auto',block:'start'}),400)}})();
-    window.addEventListener('hashchange',()=>{const k=readKode();if(k)gotoKode(k,true)});
+    // Carrd menampilkan section lewat hash. Kalau halaman dibuka dengan ?kode= tapi hash-nya bukan section tracker (mis. kosong atau #home), pindahkan.
+    function goSection(){const b=location.hash.slice(1).split('?')[0];if(b!==HASHNAME){try{location.hash=HASHNAME}catch(e){}}}
+    let lastK='';
+    (function(){const k=readKode();if(k){lastK=k;q=k;$('#q').value=k;openCode=k;setTimeout(goSection,300);setTimeout(goSection,1500)}})();
+    window.addEventListener('hashchange',()=>{const k=readKode();if(k&&k!==lastK){lastK=k;gotoKode(k,true)}});
     fetch(BASE+'/menus.json',{cache:'no-cache'}).then(r=>r.json()).then(c=>{buildMap(c);if(loaded)render()}).catch(()=>{});
     load();
   }
