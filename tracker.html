@@ -58,7 +58,8 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
 .badge{display:inline-block;padding:3px 9px;border:2px solid var(--fg);border-radius:2px;font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
 .s-received{background:var(--b-rec-bg);color:var(--b-rec-fg)}.s-progress{background:var(--b-pro-bg);color:var(--b-pro-fg)}
 .s-delivered{background:var(--b-del-bg);color:var(--b-del-fg)}.s-cancelled{background:var(--b-can-bg);color:var(--b-can-fg)}
-.md{display:none}@media(min-width:768px){.md{display:table-cell}}
+.md{display:none}.sm{display:block;margin-top:6px;font-weight:500}.sd{margin-top:4px;font-size:.78rem;color:var(--mute)}
+@media(min-width:900px){.md{display:table-cell}.sm{display:none}}
 .pager{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:18px}
 .pg{min-width:40px;min-height:40px;padding:0 10px;border:2px solid var(--fg);border-radius:2px;background:var(--card);color:var(--fg);font:800 .85rem Archivo,sans-serif;cursor:pointer;transition:background .15s}
 .pg:hover:not(:disabled){background:var(--hi);color:#000144}.pg[aria-current=page]{background:var(--fg);color:var(--bg)}.pg:disabled{opacity:.4;cursor:not-allowed}
@@ -170,9 +171,9 @@ function themes(items){const out=[];(items||[]).forEach(l=>{const raw=String(l),
  h=MAP.find(m=>low.startsWith(m[0]))||MAP.find(m=>low.includes(m[0])),t=s.match(THEME_RE),v=h?h[1]:t?t[0]:s;
  if(v&&!out.some(x=>x.toLowerCase()===v.toLowerCase()))out.push(v)});return out}
 function tr(o){
-  const tg=themes(o.items);
-  return `<tr tabindex="0" data-n="${o.n}"><td class="code">${esc(o.code||'—')}</td><td class="nm"><div class="nmw">${esc(o.name)}</div></td>
-<td class="md"><div class="th">${tg.length?tg.map(i=>`<span class="tg">${esc(i)}</span>`).join(''):'—'}</div></td>
+  const tg=themes(o.items),tags=tg.length?tg.map(i=>`<span class="tg">${esc(i)}</span>`).join(''):'—';
+  return `<tr tabindex="0" data-n="${o.n}"><td class="code">${esc(o.code||'—')}</td><td class="nm"><div class="nmw">${esc(o.name)}<div class="sm"><div class="th">${tags}</div><div class="sd">Order: ${esc(fmtDate(o.orderDate))}</div></div></div></td>
+<td class="md"><div class="th">${tags}</div></td>
 <td class="md dt">${esc(fmtDate(o.orderDate))}</td><td class="dt">${esc(fmtDate(o.deadline))}</td><td><span class="badge s-${esc(o.status)}">${esc(ST[o.status]||o.status)}</span></td></tr>`;
 }
 function pager(total,pages){
