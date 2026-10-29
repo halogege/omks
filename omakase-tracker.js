@@ -317,7 +317,7 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
     $('#dark').addEventListener('click',()=>{const d=toggleDark();try{localStorage.setItem('omk-theme',d?'dark':'light')}catch(e){}theme()});
     theme();
     // tautan langsung: tracker?kode=OMK-0091  (membuka detail order itu)
-    (function(){const v=(new URLSearchParams(location.search).get('kode')||location.hash.slice(1)||'').slice(0,40);if(v){q=v;$('#q').value=v;openCode=v}})();
+    (function(){const v=(new URLSearchParams(location.search).get('kode')||(/^OMK-\d{1,6}$/i.test(location.hash.slice(1))?location.hash.slice(1):'')).slice(0,40);if(v){q=v;$('#q').value=v;openCode=v}})();
     fetch(BASE+'/menus.json',{cache:'no-cache'}).then(r=>r.json()).then(c=>{buildMap(c);if(loaded)render()}).catch(()=>{});
     load();
   }
