@@ -7,6 +7,7 @@
  "groups": [
   {
    "name": "General, Personal, Career",
+   "theme": "General",
    "col": 5,
    "cats": [
     {
@@ -113,6 +114,7 @@
   },
   {
    "name": "Self Development",
+   "theme": "Self Development",
    "col": 6,
    "cats": [
     {
@@ -253,6 +255,7 @@
   },
   {
    "name": "Romance",
+   "theme": "Romance",
    "col": 7,
    "cats": [
     {
@@ -365,6 +368,7 @@
   },
   {
    "name": "Spiritual",
+   "theme": "Spiritual",
    "col": 8,
    "cats": [
     {
@@ -458,6 +462,7 @@
   },
   {
    "name": "Surprise Me!",
+   "theme": "Surprise Me",
    "col": 9,
    "cats": [
     {
