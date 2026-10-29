@@ -80,7 +80,7 @@ h1{font:900 clamp(41.6px,13vw,67.2px)/.9 Archivo,sans-serif;letter-spacing:-.045
 h2{font:900 24.8px/1.1 Archivo,sans-serif;letter-spacing:-.02em;margin:0 0 6px}
 .hint{color:var(--mute);font-size:13.6px;margin:0 0 10px}.c4 .hint{color:#c9caf0}
 label{display:block;font-weight:700;margin:16px 0 6px;font-size:12.8px;letter-spacing:.1em;text-transform:uppercase}
-input[type=text],input[type=email],input[type=number],select{width:100%;border:2px solid var(--ink);border-radius:2px;padding:12px;font:inherit;font-weight:500;color:var(--ink);background:#fff;-webkit-appearance:none;appearance:none}
+input[type=text],input[type=email],input[type=number],input[type=search],select{width:100%;border:2px solid var(--ink);border-radius:2px;padding:12px;font:inherit;font-weight:500;color:var(--ink);background:#fff;-webkit-appearance:none;appearance:none}
 select{background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 12px) 55%;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px}
 input:focus,select:focus{outline:3px solid var(--hi);outline-offset:1px}
 .row{display:grid;grid-template-columns:150px 1fr;gap:8px}@media(max-width:440px){.row{grid-template-columns:1fr}}
@@ -106,6 +106,9 @@ details[open] summary::after{transform:rotate(45deg)}
 .btn:disabled{background:rgba(255,255,255,.2);color:rgba(255,255,255,.55);cursor:not-allowed}
 .err{color:var(--red);font-size:14.4px;font-weight:600;min-height:1.3em;margin:8px 0}.c4 .err{color:var(--hi)}
 .hp{position:absolute;left:-9999px;height:0;overflow:hidden}
+.sug{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+.chip{border:2px solid var(--ink);border-radius:2px;background:#fff;color:var(--ink);font:600 13px Archivo,sans-serif;padding:6px 10px;min-height:36px;cursor:pointer;word-break:break-all;text-align:left}.chip:hover{background:var(--hi)}
+.sw{margin:0 0 10px}
 .info{border:2px dashed var(--ink);border-radius:2px;background:var(--paper);padding:14px 16px;margin:12px 0 8px;font-size:14px}
 .info h3{margin:0 0 6px;font:900 12.8px Archivo,sans-serif;letter-spacing:.1em;text-transform:uppercase}
 .info p{margin:0 0 10px}.info ul{margin:0 0 12px;padding-left:20px}.info li{margin:0 0 4px}.info h3:not(:first-child){border-top:2px dashed var(--ink);padding-top:12px;margin-top:12px}
@@ -134,9 +137,9 @@ details[open] summary::after{transform:rotate(45deg)}
 <label class="opt"><input type="radio" name="svc" value="both"><span>Tarot dan Bazi</span></label>
 <div class="info" id="baziInfo" hidden><h3>Syarat &amp; Ketentuan Bazi</h3>
 <p>Untuk reading Bazi, kami memerlukan beberapa data pribadi berikut:</p>
-<ul><li>Jenis kelamin biologis</li><li>Tanggal lahir lengkap (tanggal, bulan, dan tahun)</li><li>Jam lahir sedetail mungkin, hingga menit jika diketahui</li></ul>
+<ul><li>Jenis kelamin biologis</li><li>Tanggal lahir lengkap (tanggal, bulan, dan tahun)</li><li>Jam lahir (menit tidak wajib diketahui, tapi minimal kami perlu tahu kamu lahir siang atau malam)</li></ul>
 <h3>Mengapa data ini diperlukan?</h3>
-<p>Chart Bazi dihitung berdasarkan tahun, bulan, hari, dan jam lahir. Karena pilar jam berganti setiap dua jam, ketepatan waktu lahir dapat memengaruhi hasil chart dan interpretasinya.</p>
+<p>Chart Bazi dihitung berdasarkan tahun, bulan, hari, dan jam lahir. Karena pilar jam berganti setiap dua jam, menit kelahiran tidak wajib diketahui. Namun semakin spesifik jam lahirmu, semakin tepat chart dan interpretasinya, dan minimal kami perlu tahu apakah kamu lahir siang atau malam.</p>
 <p>Dalam perhitungan Bazi, jenis kelamin biologis digunakan untuk menentukan arah dan urutan Luck Pillars (siklus keberuntungan 10 tahunan). Data ini hanya digunakan untuk keperluan perhitungan Bazi, bukan untuk menentukan identitas gender. Kami menghormati identitas gender setiap klien.</p>
 <p>Kami memahami bahwa sebagian orang mungkin merasa kurang nyaman membagikan data tersebut. Namun, data ini diperlukan agar chart dapat dihitung dengan tepat. Jika data yang dibutuhkan tidak dapat diberikan, kami belum dapat memproses reading Bazi. Data ini tidak diisi di form ini. Terima kasih atas pengertianmu.</p></div></section>
 <section class="c1"><div class="top"><span>02 / Persetujuan</span><em>wajib ✦</em></div><h2>Persetujuan</h2>
@@ -153,9 +156,12 @@ details[open] summary::after{transform:rotate(45deg)}
 <label for="contact">Kontak Utama</label><p class="hint">Kontak yang kamu pakai untuk menghubungi kami. Hasil bacaan dikirim ke sini.</p>
 <div class="row"><select id="platform"><option>Twitter</option><option>Telegram</option><option>WhatsApp</option></select><input id="contact" type="text" maxlength="80" placeholder="Username atau nomor"></div>
 <label for="email">Kontak Email</label><p class="hint">Dipakai bila akunmu bermasalah saat sesi (suspend Twitter/X, banned Telegram).</p>
-<input id="email" type="email" maxlength="120" autocomplete="email" style="margin-bottom:12px">
+<input id="email" type="email" maxlength="120" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" placeholder="nama@gmail.com" style="margin-bottom:0">
+<div class="sug" id="esug" hidden></div><p class="err" id="eerr" role="alert" hidden></p><div style="height:6px"></div>
 <div class="hp" aria-hidden="true"><label>Website<input id="website" type="text" tabindex="-1" autocomplete="off"></label></div></section>
-<section class="c3"><div class="top"><span>04 / Pilihan Menu</span><em>pilih satu atau lebih</em></div><h2>Pilihan Menu</h2><p class="hint" id="menuHint">Pilih jenis layanan di bagian 01 dulu.</p><div id="menu"></div></section>
+<section class="c3"><div class="top"><span>04 / Pilihan Menu</span><em>pilih satu atau lebih</em></div><h2>Pilihan Menu</h2><p class="hint" id="menuHint">Pilih jenis layanan di bagian 01 dulu.</p>
+<div class="sw" id="msearchw" hidden><input id="msearch" type="search" placeholder="Cari menu, contoh: ghosting, karier, bazi…" maxlength="40" autocomplete="off" aria-label="Cari menu"></div>
+<p class="hint" id="mnone" hidden>Tidak ada menu yang cocok. Coba kata kunci lain.</p><div id="menu"></div></section>
 <section class="c4"><div class="top"><span>05 / Ringkasan</span><em>cek lagi ya</em></div><div class="sum" id="sum"></div><p class="hint" style="margin-top:12px">Harga final dihitung ulang oleh sistem saat order dikirim.</p>
 <div class="err" id="err" role="alert"></div><button class="btn" id="go" disabled>Kirim order</button></section>
 </div></div>
@@ -173,9 +179,20 @@ details[open] summary::after{transform:rotate(45deg)}
     const $=s=>root.querySelector(s),$$=s=>[...root.querySelectorAll(s)],esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
     const idr=n=>'Rp '+Number(n).toLocaleString('id-ID');
     let CFG,IDX={},SVC={},sel={},KEY=null,busy=false,agreed=false,CH='';
+    const DOMS=['gmail.com','yahoo.com','yahoo.co.id','outlook.com','hotmail.com','icloud.com','aol.com','live.com','proton.me'],
+     TYPO={'gmial.com':'gmail.com','gmai.com':'gmail.com','gamil.com':'gmail.com','gmil.com':'gmail.com','gnail.com':'gmail.com','gmail.co':'gmail.com','gmail.con':'gmail.com','gmail.cm':'gmail.com','gmail.om':'gmail.com','yaho.com':'yahoo.com','yahooo.com':'yahoo.com','yahoo.con':'yahoo.com','yahoo.co':'yahoo.com','hotmial.com':'hotmail.com','hotmal.com':'hotmail.com','hotmail.con':'hotmail.com','outlok.com':'outlook.com','outlook.con':'outlook.com','iclod.com':'icloud.com','icloud.con':'icloud.com'},
+     isEmail=v=>/^[^\s@]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$/.test(v)&&!/\.\./.test(v);
+    let eTouched=false;
+    function emailUi(){const v=$('#email').value.trim(),i=v.indexOf('@'),one=i>-1&&i===v.lastIndexOf('@'),dom=one?v.slice(i+1).toLowerCase():'';let list=[],msg='';
+     if(TYPO[dom]){list=[v.slice(0,i)+'@'+TYPO[dom]];msg='Domainnya kelihatan typo. Maksud kamu '+list[0]+'?'}
+     else{if(v&&!/\s/.test(v)&&(i<0||one)){const u=i<0?v:v.slice(0,i);if(u)list=DOMS.filter(x=>x.startsWith(dom)&&x!==dom).slice(0,6).map(x=>u+'@'+x)}
+      if(eTouched&&!isEmail(v))msg=!v?'Email wajib diisi.':/\s/.test(v)?'Email tidak boleh mengandung spasi.':i<0?'Email harus memakai @, contoh: nama@gmail.com.':'Format email belum benar, contoh: nama@gmail.com.'}
+     const sg=$('#esug');sg.innerHTML=list.map(x=>`<button type="button" class="chip" data-e="${esc(x)}">${esc(x)}</button>`).join('');sg.hidden=!list.length;
+     const er=$('#eerr');er.textContent=msg;er.hidden=!msg}
+    
     const note=()=>{};
     function build(){const m=$('#menu');CFG.groups.forEach(g=>{const svc=(g.service==='bazi'||g.name==='Bazi')?'bazi':'tarot';const h=document.createElement('div');h.className='gh';h.dataset.svc=svc;h.textContent=g.name==='Coming Soon'?'Segera hadir':g.name;m.appendChild(h);
-     g.cats.forEach(c=>{c.items.forEach(i=>{IDX[i.id]=i;SVC[i.id]=svc});const d=document.createElement('details');d.dataset.svc=svc;
+     g.cats.forEach(c=>{c.items.forEach(i=>{IDX[i.id]=i;SVC[i.id]=svc});const d=document.createElement('details');d.dataset.svc=svc;d.dataset.g=g.name;
      d.innerHTML=`<summary><span>${esc(c.name)}</span><small data-n="${esc(g.name+c.name)}"></small></summary>`+c.items.map(i=>{const off=i.enabled===false;
      return `<label class="item${off?' off':''}"><input type="checkbox" value="${i.id}" ${off?'disabled':''}><span>${esc(i.name)}${off?' <small>(coming soon)</small>':''}</span><span class="p">${off?'':idr(i.price)+(i.kind==='perQuestion'?' / '+(i.unit||'pertanyaan'):'')}</span></label>`+
      (i.kind==='perQuestion'?`<div class="x" data-x="${i.id}" hidden>Jumlah ${esc(i.unit||'pertanyaan')} <input type="number" min="1" max="${CFG.defaults.maxQuestions}" value="1" data-f="q"></div>`:'')+
@@ -183,17 +200,27 @@ details[open] summary::after{transform:rotate(45deg)}
      m.appendChild(d)})})}
     function show(){const mb=CH==='bazi'||CH==='both',mt=CH==='tarot'||CH==='both';
      $$('#menu [data-svc]').forEach(e=>{e.hidden=!(e.dataset.svc==='bazi'?mb:mt)});$('#baziInfo').hidden=!mb;$('#menuHint').hidden=!!CH;
-     Object.keys(sel).forEach(id=>{if(SVC[id]==='bazi'?mb:mt)return;delete sel[id];const c=$('#menu input[value="'+id+'"]'),x=$('[data-x="'+id+'"]');if(c)c.checked=false;if(x)x.hidden=true})}
+     Object.keys(sel).forEach(id=>{if(SVC[id]==='bazi'?mb:mt)return;delete sel[id];const c=$('#menu input[value="'+id+'"]'),x=$('[data-x="'+id+'"]');if(c)c.checked=false;if(x)x.hidden=true});filt()}
+    function filt(){const k=($('#msearch').value||'').trim().toLowerCase(),mb=CH==='bazi'||CH==='both',mt=CH==='tarot'||CH==='both';let gh=null,cnt=0,any=false;const fin=()=>{if(gh)gh.hidden=!cnt};
+     [...$('#menu').children].forEach(e=>{
+      if(e.classList.contains('gh')){fin();gh=e;cnt=0;return}
+      if(e.tagName!=='DETAILS')return;
+      const ok=e.dataset.svc==='bazi'?mb:mt,cat=e.querySelector('summary span').textContent,g=e.dataset.g||'';let n=0;
+      e.querySelectorAll('label.item').forEach(l=>{const c=l.querySelector('input'),hit=ok&&(!k||c.checked||(l.textContent+' '+cat+' '+g).toLowerCase().includes(k));l.hidden=!hit;if(hit)n++});
+      e.hidden=!ok||!n;
+      if(k&&n&&!e.open){e.open=true;e.dataset.so='1'}else if(!k&&e.dataset.so){e.open=false;delete e.dataset.so}
+      if(!e.hidden){cnt++;any=true}});
+     fin();$('#mnone').hidden=!(CH&&k&&!any);$('#msearchw').hidden=!CH}
     function calc(){let t=0,rows=[];for(const[id,s]of Object.entries(sel)){const m=IDX[id];let a=m.price,l=m.name;
      if(m.kind==='perQuestion'){a*=s.q;l+=` (${s.q} ${m.unit||'pertanyaan'})`}if(m.kind==='custom'){a+=s.e*m.extraCardPrice;if(s.e)l+=` (+${s.e} kartu)`}t+=a;rows.push([l,a])}return{t,rows}}
     function paint(){const{t,rows}=calc();$('#sum').innerHTML=rows.length?rows.map(r=>`<div><span>${esc(r[0])}</span><span>${idr(r[1])}</span></div>`).join('')+`<div class="tot"><span>Total</span><span>${idr(t)}</span></div>`:'<span class="hint">Belum ada menu dipilih.</span>';
-     const ok=agreed&&$('input[name=visit]:checked')&&$('#name').value.trim()&&$('#contact').value.trim()&&/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('#email').value.trim())&&CH&&rows.length&&!busy;$('#go').disabled=!ok;note()}
+     const ok=agreed&&$('input[name=visit]:checked')&&$('#name').value.trim()&&$('#contact').value.trim()&&isEmail($('#email').value.trim())&&CH&&rows.length&&!busy;$('#go').disabled=!ok;note()}
     root.addEventListener('change',e=>{const t=e.target;
      if(t.name==='svc'){CH=t.value;show()}
      if(t.name==='agree'){agreed=t.value==='1';$('#rest').hidden=!agreed;$('#noagree').hidden=agreed}
      if(t.type==='checkbox'&&IDX[t.value]){const x=root.querySelector(`[data-x="${t.value}"]`);if(t.checked)sel[t.value]={q:1,e:0};else delete sel[t.value];if(x)x.hidden=!t.checked}
      paint()});
-    root.addEventListener('input',e=>{const t=e.target,x=t.closest&&t.closest('[data-x]');if(x&&sel[x.dataset.x]){const lim=t.dataset.f==='q'?CFG.defaults.maxQuestions:CFG.defaults.maxExtraCards,min=t.dataset.f==='q'?1:0;sel[x.dataset.x][t.dataset.f]=Math.max(min,Math.min(lim,parseInt(t.value,10)||min))}paint()});
+    root.addEventListener('input',e=>{const t=e.target;if(t.id==='msearch'){filt();return}const x=t.closest&&t.closest('[data-x]');if(x&&sel[x.dataset.x]){const lim=t.dataset.f==='q'?CFG.defaults.maxQuestions:CFG.defaults.maxExtraCards,min=t.dataset.f==='q'?1:0;sel[x.dataset.x][t.dataset.f]=Math.max(min,Math.min(lim,parseInt(t.value,10)||min))}paint()});
     async function submit(){if(busy)return;busy=true;$('#go').disabled=true;$('#go').textContent='Mengirim...';$('#err').textContent='';
      KEY=KEY||(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2)+'0000000000');
      const body={key:KEY,agreed,visit:$('input[name=visit]:checked').value,name:$('#name').value,platform:$('#platform').value,contact:$('#contact').value,email:$('#email').value,website:$('#website').value,
@@ -209,6 +236,9 @@ details[open] summary::after{transform:rotate(45deg)}
      <section class="card c2"><div class="top"><span>Pembayaran</span><em>last step ✦</em></div><p class="total">Total <b>${idr(j.total)}</b></p><p class="hint">Bayar dengan QRIS, lalu <b>kirim bukti pembayaran lewat chat</b> ke pembaca.</p>
      <img class="qris" src="${BASE}/qris.png" alt="Kode QRIS" onerror="this.style.display='none'"></section>`;host.scrollIntoView({behavior:'auto',block:'start'});note()}
     $('#go').addEventListener('click',submit);['name','contact','email'].forEach(i=>$('#'+i).addEventListener('input',paint));
+    $('#email').addEventListener('input',emailUi);$('#email').addEventListener('blur',()=>{eTouched=true;emailUi()});
+    $('#esug').addEventListener('mousedown',e=>e.preventDefault());
+    $('#esug').addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-e]');if(!b)return;$('#email').value=b.dataset.e;eTouched=true;emailUi();paint();$('#email').focus()});
     fetch(BASE+'/menus.json',{cache:'no-cache'}).then(r=>r.json()).then(c=>{CFG=c;build();show();paint()}).catch(()=>{});
   }
 
