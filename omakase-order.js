@@ -137,7 +137,7 @@ details[open] summary::after{transform:rotate(45deg)}
 <label class="opt"><input type="radio" name="svc" value="both"><span>Tarot dan Bazi</span></label>
 <div class="info" id="baziInfo" hidden><h3>Syarat &amp; Ketentuan Bazi</h3>
 <p>Untuk reading Bazi, kami memerlukan beberapa data pribadi berikut:</p>
-<ul><li>Jenis kelamin biologis</li><li>Tanggal lahir lengkap (tanggal, bulan, dan tahun)</li><li>Jam lahir (menit tidak wajib diketahui, tapi minimal kami perlu tahu kamu lahir siang atau malam)</li></ul>
+<ul><li>Jenis kelamin biologis</li><li>Tanggal lahir lengkap (tanggal, bulan, dan tahun)</li><li>Jam lahir (menit tidak wajib diketahui)</li></ul>
 <h3>Mengapa data ini diperlukan?</h3>
 <p>Chart Bazi dihitung berdasarkan tahun, bulan, hari, dan jam lahir. Karena pilar jam berganti setiap dua jam, menit kelahiran tidak wajib diketahui. Namun semakin spesifik jam lahirmu, semakin tepat chart dan interpretasinya, dan minimal kami perlu tahu apakah kamu lahir siang atau malam.</p>
 <p>Dalam perhitungan Bazi, jenis kelamin biologis digunakan untuk menentukan arah dan urutan Luck Pillars (siklus keberuntungan 10 tahunan). Data ini hanya digunakan untuk keperluan perhitungan Bazi, bukan untuk menentukan identitas gender. Kami menghormati identitas gender setiap klien.</p>
