@@ -31,7 +31,7 @@ h1{font:900 clamp(2.4rem,11vw,3.8rem)/.9 Archivo,sans-serif;letter-spacing:-.045
 .hl{background:linear-gradient(var(--hi),var(--hi)) 0 92%/100% .45em no-repeat;color:var(--fg)}
 .sub{margin:10px 0 0;font:700 .95rem 'Fuzzy Bubbles',Archivo,cursive;color:var(--mute)}
 .ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-input[type=search],select{border:2px solid var(--fg);border-radius:2px;background:var(--card);color:var(--fg);font:500 .95rem Archivo,sans-serif;padding:10px 12px;min-height:44px;-webkit-appearance:none;appearance:none}
+input[type=search],input[type=password],select{border:2px solid var(--fg);border-radius:2px;background:var(--card);color:var(--fg);font:500 .95rem Archivo,sans-serif;padding:10px 12px;min-height:44px;-webkit-appearance:none;appearance:none}
 select{background-image:linear-gradient(45deg,transparent 50%,var(--fg) 50%),linear-gradient(135deg,var(--fg) 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 12px) 55%;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px}
 input[type=search]{width:240px;max-width:100%}
 input:focus-visible,select:focus-visible,button:focus-visible,tr[tabindex]:focus-visible{outline:3px solid var(--hi);outline-offset:1px}
@@ -78,8 +78,9 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
 .btn{display:inline-flex;justify-content:space-between;align-items:center;gap:14px;border:0;border-radius:2px;background:var(--hi);color:#000144;padding:12px 16px;font:900 .8rem Archivo,sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;min-height:48px;transition:background .2s}
 .btn:hover:not(:disabled){background:#fff;outline:2px solid #000144}
 .note{margin:24px 0 0;font-size:.82rem;color:var(--mute);max-width:70ch}
-#modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,1,68,.55)}
-#modal.open{display:flex}
+#modal,#amodal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,1,68,.55)}
+#modal.open,#amodal.open{display:flex}
+.aerr{color:var(--red);font-weight:700;font-size:14px;margin:10px 0 0}.dlg .il{margin-top:6px}
 .dlg{position:relative;width:100%;max-width:640px;max-height:90vh;overflow:auto;background:var(--card);color:var(--fg);border:2px solid var(--fg);border-radius:3px;padding:22px;box-shadow:6px 6px 0 var(--hi)}
 .x{position:absolute;right:12px;top:10px;border:0;background:none;color:var(--mute);font-size:1.2rem;cursor:pointer;padding:6px 10px}.x:hover{color:var(--fg)}
 .mh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-right:32px;padding-bottom:10px;margin-bottom:10px;border-bottom:2px solid var(--fg)}
@@ -109,6 +110,7 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
     <input id="q" type="search" placeholder="Cari kode, nama, platform…" autocomplete="off" maxlength="40" aria-label="Cari order">
     <select id="statusFilter" aria-label="Saring status"></select>
     <button class="icon" id="dark" type="button" aria-label="Ganti mode gelap" title="Mode gelap">☾</button>
+    <button class="icon" id="admin" type="button" aria-label="Admin" title="Masuk admin">🔒</button>
   </div>
 </header>
 
@@ -120,6 +122,14 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
 </main>
 <div class="strip end"></div>
 
+<div id="amodal" aria-hidden="true"><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="aTitle" style="max-width:380px">
+    <button class="x" id="aClose" type="button" aria-label="Tutup">✕</button>
+    <div class="mh"><h3 id="aTitle">Masuk admin</h3></div>
+    <label class="il" for="aPw">Password</label>
+    <input id="aPw" type="password" autocomplete="current-password" maxlength="200" style="width:100%;margin-top:6px">
+    <p class="aerr" id="aErr" role="alert" hidden></p>
+    <div class="mf"><button class="btn" id="aGo" type="button">Masuk</button></div>
+  </div></div>
 <div id="modal" aria-hidden="true">
   <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="mName">
     <button class="x" id="mClose" type="button" aria-label="Tutup">✕</button>
@@ -206,8 +216,9 @@ async function load(){
   if(!loaded)$('#state-a').innerHTML='<div class="msg"><p>Memuat data order…</p></div>';
   try{
     if(!window.API_URL||/GANTI/.test(window.API_URL))throw new Error('Tracker belum tersambung ke data order.');
-    const r=await fetch(window.API_URL+(window.API_URL.includes('?')?'&':'?')+'action=tracker&t='+Date.now(),{cache:'no-store'});
-    const j=await r.json();
+    let j=null;
+    if(TOKEN){const ra=await fetch(window.API_URL,{method:'POST',headers:{'content-type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'admin_data',token:TOKEN})});j=await ra.json().catch(()=>null);if(j&&j.error==='expired'){setAdmin('');j=null;$('#state-a').innerHTML='<div class="msg"><p class="err">Sesi admin habis. Masuk lagi.</p></div>'}}
+    if(!j){const r=await fetch(window.API_URL+(window.API_URL.includes('?')?'&':'?')+'action=tracker&t='+Date.now(),{cache:'no-store'});j=await r.json()}
     if(!j||!j.ok||!Array.isArray(j.orders))throw new Error('Data order belum bisa dibaca.');
     ALL=j.orders.map(o=>{const it=itemsOf(o),tm=Array.isArray(o.themes)&&o.themes.length?o.themes.map(x=>String(x).trim()).filter(Boolean):themes(it);return Object.assign({},o,{items:it,tema:tm.filter((x,i)=>tm.findIndex(y=>y.toLowerCase()===x.toLowerCase())===i)})}).sort((a,b)=>b.n-a.n);loaded=true;
     $('#lastUpdate').textContent=new Date(j.updated).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Jakarta'}).replace('.',':')+' WIB';
@@ -216,6 +227,24 @@ async function load(){
   }catch(e){fail(e&&e.message&&!/fetch|json|network|load failed/i.test(e.message)?e.message:'Tidak bisa terhubung ke server. Periksa koneksi lalu coba lagi.')}
   finally{loading=false;$('#refresh').disabled=false}
 }
+/* admin: password dicek di server (Apps Script). Browser hanya menyimpan token sesi (sessionStorage), bukan password. */
+    let TOKEN='';try{TOKEN=sessionStorage.getItem('omk-adm')||''}catch(e){}
+    function setAdmin(t){TOKEN=t||'';try{if(TOKEN)sessionStorage.setItem('omk-adm',TOKEN);else sessionStorage.removeItem('omk-adm')}catch(e){}admUi()}
+    function admUi(){$('#admin').textContent=TOKEN?'🔓':'🔒';$('#admin').title=TOKEN?'Mode admin aktif':'Masuk admin'}
+    function openA(){$('#aErr').hidden=true;$('#aPw').value='';$('#amodal').classList.add('open');$('#amodal').setAttribute('aria-hidden','false');$('#aPw').focus()}
+    function closeA(){$('#amodal').classList.remove('open');$('#amodal').setAttribute('aria-hidden','true');$('#aPw').value='';$('#admin').focus()}
+    async function loginA(){const pw=$('#aPw').value;if(!pw)return;const b=$('#aGo'),er=$('#aErr');b.disabled=true;er.hidden=true;
+      try{const r=await fetch(window.API_URL,{method:'POST',headers:{'content-type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'admin_login',password:pw})}),j=await r.json();
+        if(!j||!j.ok||!j.token)throw new Error(j&&j.message||'Gagal masuk. Coba lagi.');
+        $('#aPw').value='';setAdmin(j.token);closeA();loaded=false;load()}
+      catch(e){er.textContent=e&&e.message&&!/fetch|json|network|load failed/i.test(e.message)?e.message:'Tidak bisa terhubung ke server.';er.hidden=false;$('#aPw').select()}
+      finally{b.disabled=false}}
+    async function logoutA(){const t=TOKEN;setAdmin('');try{await fetch(window.API_URL,{method:'POST',headers:{'content-type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'admin_logout',token:t})})}catch(e){}loaded=false;load()}
+    $('#admin').addEventListener('click',()=>{if(TOKEN){if(confirm('Keluar dari mode admin?'))logoutA()}else openA()});
+    $('#aClose').addEventListener('click',closeA);$('#aGo').addEventListener('click',loginA);
+    $('#amodal').addEventListener('click',e=>{if(e.target.id==='amodal')closeA()});
+    $('#aPw').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();loginA()}else if(e.key==='Escape')closeA()});
+    admUi();
 /* modal */
 let cur=null;
 function openModal(o){
