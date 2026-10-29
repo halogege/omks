@@ -49,6 +49,9 @@ details[open] summary::after{transform:rotate(45deg)}
 .btn:disabled{background:rgba(255,255,255,.2);color:rgba(255,255,255,.55);cursor:not-allowed}
 .err{color:var(--red);font-size:.9rem;font-weight:600;min-height:1.3em;margin:8px 0}.c4 .err{color:var(--hi)}
 .hp{position:absolute;left:-9999px;height:0;overflow:hidden}
+.info{border:2px dashed var(--ink);border-radius:2px;background:var(--paper);padding:14px 16px;margin:12px 0 8px;font-size:.88rem}
+.info h3{margin:0 0 6px;font:900 .8rem Archivo,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.info p{margin:0 0 10px}.info ul{margin:0 0 12px;padding-left:20px}.info li{margin:0 0 4px}.info h3:not(:first-child){border-top:2px dashed var(--ink);padding-top:12px;margin-top:12px}
 .ok{background:var(--ink);color:#fff;border-radius:3px;padding:20px;margin-bottom:26px;box-shadow:6px 6px 0 var(--hi)}
 .tagline{font:700 1rem 'Fuzzy Bubbles',Archivo,cursive;color:var(--hi);margin:0}
 .code{font:900 clamp(2.6rem,14vw,3.8rem)/1 Archivo,sans-serif;letter-spacing:-.04em;color:var(--hi);margin:6px 0 12px}
@@ -64,15 +67,27 @@ details[open] summary::after{transform:rotate(45deg)}
 <h1>Omaka<wbr>seya.</h1>
 <div class="intro">
 <p>Selamat datang di OMAKASEYA! Jika kamu mendapatkan link dari form ini, maka kamu diperkenankan untuk mendapat sesi dengan tim karyawan kecil kami. Silakan isi satu per satu dan lakukan dengan seksama. <span class="hl">Tidak ada yang perlu dilakukan dengan terburu-buru.</span></p>
-<p>Ingat, bahwasanya Anda <b>tidak memiliki kuasa untuk memilih reader</b> mana yang akan mengerjakan bacaan Anda. Bisa saja Anda hanya akan dibacakan oleh salah satu, salah dua, atau bahkan kelimanya sekaligus. Inilah yang menjadi unik dari toko OMAKASEYA yang berkonsep omakase.</p>
+<p>Ingat, bahwasanya Anda <b>tidak memiliki kuasa untuk memilih reader</b> mana yang akan mengerjakan bacaan Anda. Bisa saja Anda hanya akan dibacakan oleh salah satu, salah dua, atau bahkan ketiganya sekaligus. Inilah yang menjadi unik dari toko OMAKASEYA yang berkonsep omakase.</p>
 </div>
 <div id="form">
-<section class="c1"><div class="top"><span>01 / Persetujuan</span><em>wajib ✦</em></div><h2>Persetujuan</h2>
+<section class="c3"><div class="top"><span>01 / Layanan</span><em>mau pesan apa?</em></div><h2>Mau memesan menu apa?</h2>
+<p class="hint">Pilihan ini hanya untuk menampilkan daftar menu yang sesuai, tidak ikut tercatat di order.</p>
+<label class="opt"><input type="radio" name="svc" value="tarot"><span>Tarot saja</span></label>
+<label class="opt"><input type="radio" name="svc" value="bazi"><span>Bazi saja</span></label>
+<label class="opt"><input type="radio" name="svc" value="both"><span>Tarot dan Bazi</span></label>
+<div class="info" id="baziInfo" hidden><h3>Syarat &amp; Ketentuan Bazi</h3>
+<p>Untuk reading Bazi, kami memerlukan beberapa data pribadi berikut:</p>
+<ul><li>Jenis kelamin biologis</li><li>Tanggal lahir lengkap (tanggal, bulan, dan tahun)</li><li>Jam lahir sedetail mungkin, hingga menit jika diketahui</li></ul>
+<h3>Mengapa data ini diperlukan?</h3>
+<p>Chart Bazi dihitung berdasarkan tahun, bulan, hari, dan jam lahir. Karena pilar jam berganti setiap dua jam, ketepatan waktu lahir dapat memengaruhi hasil chart dan interpretasinya.</p>
+<p>Dalam perhitungan Bazi, jenis kelamin biologis digunakan untuk menentukan arah dan urutan Luck Pillars (siklus keberuntungan 10 tahunan). Data ini hanya digunakan untuk keperluan perhitungan Bazi, bukan untuk menentukan identitas gender. Kami menghormati identitas gender setiap klien.</p>
+<p>Kami memahami bahwa sebagian orang mungkin merasa kurang nyaman membagikan data tersebut. Namun, data ini diperlukan agar chart dapat dihitung dengan tepat. Jika data yang dibutuhkan tidak dapat diberikan, kami belum dapat memproses reading Bazi. Data ini tidak diisi di form ini. Terima kasih atas pengertianmu.</p></div></section>
+<section class="c1"><div class="top"><span>02 / Persetujuan</span><em>wajib ✦</em></div><h2>Persetujuan</h2>
 <label class="opt"><input type="radio" name="agree" value="1"><span>Saya menyetujui sistem toko Omakaseya.</span></label>
 <label class="opt"><input type="radio" name="agree" value="0"><span>Saya tidak menyetujui.</span></label>
 <p class="err" id="noagree" hidden>Terima kasih sudah berkunjung. Kamu perlu menyetujui sistem toko untuk memesan.</p></section>
 <div id="rest" hidden>
-<section class="c2"><div class="top"><span>02 / Informasi Klien</span><em>kenalan dulu~</em></div><h2>Informasi Klien</h2>
+<section class="c2"><div class="top"><span>03 / Informasi Klien</span><em>kenalan dulu~</em></div><h2>Informasi Klien</h2>
 <label>Apakah ini kunjungan pertamamu?</label>
 <label class="opt"><input type="radio" name="visit" value="Belum pernah."><span>Belum pernah.</span></label>
 <label class="opt"><input type="radio" name="visit" value="Sudah pernah."><span>Sudah pernah.</span></label>
@@ -83,32 +98,36 @@ details[open] summary::after{transform:rotate(45deg)}
 <label for="email">Kontak Email</label><p class="hint">Dipakai bila akunmu bermasalah saat sesi (suspend Twitter/X, banned Telegram).</p>
 <input id="email" type="email" maxlength="120" autocomplete="email" style="margin-bottom:12px">
 <div class="hp" aria-hidden="true"><label>Website<input id="website" type="text" tabindex="-1" autocomplete="off"></label></div></section>
-<section class="c3"><div class="top"><span>03 / Pilihan Menu</span><em>pilih satu atau lebih</em></div><h2>Pilihan Menu</h2><div id="menu"></div></section>
-<section class="c4"><div class="top"><span>04 / Ringkasan</span><em>cek lagi ya</em></div><div class="sum" id="sum"></div><p class="hint" style="margin-top:12px">Harga final dihitung ulang oleh sistem saat order dikirim.</p>
+<section class="c3"><div class="top"><span>04 / Pilihan Menu</span><em>pilih satu atau lebih</em></div><h2>Pilihan Menu</h2><p class="hint" id="menuHint">Pilih jenis layanan di bagian 01 dulu.</p><div id="menu"></div></section>
+<section class="c4"><div class="top"><span>05 / Ringkasan</span><em>cek lagi ya</em></div><div class="sum" id="sum"></div><p class="hint" style="margin-top:12px">Harga final dihitung ulang oleh sistem saat order dikirim.</p>
 <div class="err" id="err" role="alert"></div><button class="btn" id="go" disabled>Kirim order</button></section>
 </div></div>
 <div id="done" hidden></div>
 <div class="strip end"></div></div>
 <script src="config.js"></script>
 <script>
-const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const idr=n=>'Rp '+Number(n).toLocaleString('id-ID');
-let CFG,IDX={},sel={},KEY=null,busy=false,agreed=false;
+let CFG,IDX={},SVC={},sel={},KEY=null,busy=false,agreed=false,CH='';
 const note=()=>{try{parent.postMessage({omk:document.documentElement.scrollHeight},'*')}catch(e){}};
 new ResizeObserver(note).observe(document.body);
-function build(){const m=$('#menu');CFG.groups.forEach(g=>{const h=document.createElement('div');h.className='gh';h.textContent=g.name==='Coming Soon'?'Segera hadir':g.name;m.appendChild(h);
- g.cats.forEach(c=>{c.items.forEach(i=>IDX[i.id]=i);const d=document.createElement('details');
+function build(){const m=$('#menu');CFG.groups.forEach(g=>{const svc=(g.service==='bazi'||g.name==='Bazi')?'bazi':'tarot';const h=document.createElement('div');h.className='gh';h.dataset.svc=svc;h.textContent=g.name==='Coming Soon'?'Segera hadir':g.name;m.appendChild(h);
+ g.cats.forEach(c=>{c.items.forEach(i=>{IDX[i.id]=i;SVC[i.id]=svc});const d=document.createElement('details');d.dataset.svc=svc;
  d.innerHTML=`<summary><span>${esc(c.name)}</span><small data-n="${esc(g.name+c.name)}"></small></summary>`+c.items.map(i=>{const off=i.enabled===false;
  return `<label class="item${off?' off':''}"><input type="checkbox" value="${i.id}" ${off?'disabled':''}><span>${esc(i.name)}${off?' <small>(coming soon)</small>':''}</span><span class="p">${off?'':idr(i.price)+(i.kind==='perQuestion'?' / '+(i.unit||'pertanyaan'):'')}</span></label>`+
  (i.kind==='perQuestion'?`<div class="x" data-x="${i.id}" hidden>Jumlah ${esc(i.unit||'pertanyaan')} <input type="number" min="1" max="${CFG.defaults.maxQuestions}" value="1" data-f="q"></div>`:'')+
  (i.kind==='custom'?`<div class="x" data-x="${i.id}" hidden>Tambahan kartu (mulai 5 kartu; +${idr(i.extraCardPrice)}/kartu) <input type="number" min="0" max="${CFG.defaults.maxExtraCards}" value="0" data-f="e"></div>`:'')}).join('');
  m.appendChild(d)})})}
-function calc(){let t=0,rows=[];for(const[id,s]of Object.entries(sel)){const m=IDX[id];let a=m.price,l=m.name;
+function show(){const mb=CH==='bazi'||CH==='both',mt=CH==='tarot'||CH==='both';
+     $$('#menu [data-svc]').forEach(e=>{e.hidden=!(e.dataset.svc==='bazi'?mb:mt)});$('#baziInfo').hidden=!mb;$('#menuHint').hidden=!!CH;
+     Object.keys(sel).forEach(id=>{if(SVC[id]==='bazi'?mb:mt)return;delete sel[id];const c=$('#menu input[value="'+id+'"]'),x=$('[data-x="'+id+'"]');if(c)c.checked=false;if(x)x.hidden=true})}
+    function calc(){let t=0,rows=[];for(const[id,s]of Object.entries(sel)){const m=IDX[id];let a=m.price,l=m.name;
  if(m.kind==='perQuestion'){a*=s.q;l+=` (${s.q} ${m.unit||'pertanyaan'})`}if(m.kind==='custom'){a+=s.e*m.extraCardPrice;if(s.e)l+=` (+${s.e} kartu)`}t+=a;rows.push([l,a])}return{t,rows}}
 function paint(){const{t,rows}=calc();$('#sum').innerHTML=rows.length?rows.map(r=>`<div><span>${esc(r[0])}</span><span>${idr(r[1])}</span></div>`).join('')+`<div class="tot"><span>Total</span><span>${idr(t)}</span></div>`:'<span class="hint">Belum ada menu dipilih.</span>';
- const ok=agreed&&$('input[name=visit]:checked')&&$('#name').value.trim()&&$('#contact').value.trim()&&/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('#email').value.trim())&&rows.length&&!busy;$('#go').disabled=!ok;note()}
+ const ok=agreed&&$('input[name=visit]:checked')&&$('#name').value.trim()&&$('#contact').value.trim()&&/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('#email').value.trim())&&CH&&rows.length&&!busy;$('#go').disabled=!ok;note()}
 document.addEventListener('change',e=>{const t=e.target;
- if(t.name==='agree'){agreed=t.value==='1';$('#rest').hidden=!agreed;$('#noagree').hidden=agreed}
+ if(t.name==='svc'){CH=t.value;show()}
+     if(t.name==='agree'){agreed=t.value==='1';$('#rest').hidden=!agreed;$('#noagree').hidden=agreed}
  if(t.type==='checkbox'&&IDX[t.value]){const x=document.querySelector(`[data-x="${t.value}"]`);if(t.checked)sel[t.value]={q:1,e:0};else delete sel[t.value];if(x)x.hidden=!t.checked}
  paint()});
 document.addEventListener('input',e=>{const t=e.target,x=t.closest&&t.closest('[data-x]');if(x&&sel[x.dataset.x]){const lim=t.dataset.f==='q'?CFG.defaults.maxQuestions:CFG.defaults.maxExtraCards,min=t.dataset.f==='q'?1:0;sel[x.dataset.x][t.dataset.f]=Math.max(min,Math.min(lim,parseInt(t.value,10)||min))}paint()});
@@ -127,5 +146,5 @@ function done(j,platform){KEY=null;const dl=j.deadline?new Date(j.deadline+'T00:
  <section class="card c2"><div class="top"><span>Pembayaran</span><em>last step ✦</em></div><p class="total">Total <b>${idr(j.total)}</b></p><p class="hint">Bayar dengan QRIS, lalu <b>kirim bukti pembayaran lewat chat</b> ke pembaca.</p>
  <img class="qris" src="/qris.png" alt="Kode QRIS" onerror="this.style.display='none'"></section>`;scrollTo(0,0);note()}
 $('#go').addEventListener('click',submit);['name','contact','email'].forEach(i=>$('#'+i).addEventListener('input',paint));
-fetch('menus.json',{cache:'no-cache'}).then(r=>r.json()).then(c=>{CFG=c;build();paint()}).catch(()=>{});
+fetch('menus.json',{cache:'no-cache'}).then(r=>r.json()).then(c=>{CFG=c;build();show();paint()}).catch(()=>{});
 </script></body></html>
