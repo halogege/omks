@@ -8,7 +8,7 @@
   var cs = document.currentScript || document.querySelector('script[src*="/omakase.js"]');
   if (!cs || !cs.src) return;
   var BASE = new URL(cs.src).origin;
-  var ATTRS = ["data-width", "data-scale", "data-bg", "data-theme", "data-api"];
+  var ATTRS = ["data-width", "data-scale", "data-bg", "data-theme", "data-api", "data-hash"];
 
   function add(file) {
     var s = document.createElement("script");
