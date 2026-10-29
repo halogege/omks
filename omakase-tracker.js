@@ -130,7 +130,6 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
 .note{margin:24px 0 0;font-size:13.12px;color:var(--mute);max-width:70ch}
 #modal,#amodal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,1,68,.55)}
 #modal.open,#amodal.open{display:flex}
-.admbar{display:flex;justify-content:space-between;align-items:center;gap:10px;border:2px dashed var(--fg);border-radius:2px;padding:8px 12px;margin:0 0 12px;font-size:13px;font-weight:700;background:var(--card)}
 .aerr{color:var(--red);font-weight:700;font-size:14px;margin:10px 0 0}.dlg .il{margin-top:6px}
 .dlg{position:relative;width:100%;max-width:640px;max-height:90vh;overflow:auto;background:var(--card);color:var(--fg);border:2px solid var(--fg);border-radius:3px;padding:22px;box-shadow:6px 6px 0 var(--hi)}
 .x{position:absolute;right:12px;top:10px;border:0;background:none;color:var(--mute);font-size:19.2px;cursor:pointer;padding:6px 10px}.x:hover{color:var(--fg)}
@@ -161,8 +160,6 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
     <button class="icon" id="admin" type="button" aria-label="Admin" title="Masuk admin">🔒</button>
   </div>
 </header>
-
-<div class="admbar" id="admbar" hidden><span>Mode admin aktif: nama, kontak, dan email tampil lengkap.</span><button class="link" id="admout" type="button">Keluar</button></div>
 
 <div class="bar"><span id="count"></span><button class="link" id="refresh" type="button">Perbarui sekarang</button></div>
 
@@ -299,7 +296,7 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
     /* admin: password dicek di server (Apps Script). Browser hanya menyimpan token sesi (sessionStorage), bukan password. */
     let TOKEN='';try{TOKEN=sessionStorage.getItem('omk-adm')||''}catch(e){}
     function setAdmin(t){TOKEN=t||'';try{if(TOKEN)sessionStorage.setItem('omk-adm',TOKEN);else sessionStorage.removeItem('omk-adm')}catch(e){}admUi()}
-    function admUi(){$('#admin').textContent=TOKEN?'🔓':'🔒';$('#admin').title=TOKEN?'Mode admin aktif':'Masuk admin';$('#admbar').hidden=!TOKEN}
+    function admUi(){$('#admin').textContent=TOKEN?'🔓':'🔒';$('#admin').title=TOKEN?'Mode admin aktif':'Masuk admin'}
     function openA(){$('#aErr').hidden=true;$('#aPw').value='';$('#amodal').classList.add('open');$('#amodal').setAttribute('aria-hidden','false');$('#aPw').focus()}
     function closeA(){$('#amodal').classList.remove('open');$('#amodal').setAttribute('aria-hidden','true');$('#aPw').value='';$('#admin').focus()}
     async function loginA(){const pw=$('#aPw').value;if(!pw)return;const b=$('#aGo'),er=$('#aErr');b.disabled=true;er.hidden=true;
@@ -310,7 +307,6 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
       finally{b.disabled=false}}
     async function logoutA(){const t=TOKEN;setAdmin('');try{await fetch(API,{method:'POST',headers:{'content-type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'admin_logout',token:t})})}catch(e){}loaded=false;load()}
     $('#admin').addEventListener('click',()=>{if(TOKEN){if(confirm('Keluar dari mode admin?'))logoutA()}else openA()});
-    $('#admout').addEventListener('click',logoutA);
     $('#aClose').addEventListener('click',closeA);$('#aGo').addEventListener('click',loginA);
     $('#amodal').addEventListener('click',e=>{if(e.target.id==='amodal')closeA()});
     $('#aPw').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();loginA()}else if(e.key==='Escape')closeA()});
