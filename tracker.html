@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#000144">
+<meta property="og:title" content="✦ 任せ屋 ✦ | READING TRACKER">
+<meta property="og:description" content="Omakaseya's Reading Tracker. Status bersifat view-only dan diperbarui oleh Admin. Nama, kontak, dan email disensor.">
+<title>✦ 任せ屋 ✦ | READING TRACKER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?display=swap&family=Archivo:wght@400;500;600;700;900&family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem('omk-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}</script>
+<style>
+:root{color-scheme:light;--bg:#f3efe4;--fg:#000144;--mute:#6b6c99;--card:#fff;--line:#d9d6cb;--head:#000144;--headfg:#fff;--hover:#ece8db;--hi:#ffd75e;--red:#c4161c;
+--b-rec-bg:#e5e7eb;--b-rec-fg:#1f2937;--b-pro-bg:#fef08a;--b-pro-fg:#713f12;--b-del-bg:#bbf7d0;--b-del-fg:#14532d;--b-can-bg:#262626;--b-can-fg:#fff}
+html.dark{color-scheme:dark;--bg:#07070f;--fg:#f1f1ff;--mute:#9b9cc6;--card:#0f0f1c;--line:#2b2b42;--head:#000;--headfg:#fff;--hover:#17172b;
+--b-rec-bg:#525252;--b-rec-fg:#fff;--b-pro-bg:#854d0e;--b-pro-fg:#fff;--b-del-bg:#166534;--b-del-fg:#fff;--b-can-bg:#404040;--b-can-fg:#fff}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--fg);font:15px/1.5 Archivo,system-ui,sans-serif;transition:background .2s,color .2s}
+main{max-width:1152px;margin:0 auto;padding:16px 16px 48px}
+header.hd{display:flex;flex-direction:column;gap:14px;margin-bottom:18px}
+@media(min-width:768px){header.hd{flex-direction:row;justify-content:space-between;align-items:flex-end}}
+h1{font:900 clamp(1.4rem,4.4vw,1.9rem)/1.15 Archivo,sans-serif;margin:0;letter-spacing:-.01em}
+.sub{margin:4px 0 0;font-size:.82rem;color:var(--mute)}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+input[type=search],select{border:2px solid var(--fg);border-radius:4px;background:var(--card);color:var(--fg);font:500 .9rem Archivo,sans-serif;padding:8px 10px;min-height:40px}
+input[type=search]{width:220px;max-width:100%}
+input:focus-visible,select:focus-visible,button:focus-visible,tr[tabindex]:focus-visible{outline:3px solid var(--hi);outline-offset:1px}
+.icon{width:40px;height:40px;border:2px solid var(--fg);border-radius:4px;background:var(--card);color:var(--fg);cursor:pointer;font-size:1.05rem;line-height:1}
+.tabs{display:inline-flex;border:2px solid var(--fg);border-radius:4px;overflow:hidden}
+.tab{border:0;background:var(--card);color:var(--fg);padding:8px 14px;min-height:40px;font:700 .85rem Archivo,sans-serif;cursor:pointer;transition:background .15s,color .15s}
+.tab+.tab{border-left:2px solid var(--fg)}
+.tab:hover{background:var(--hi);color:#000144}
+.tab[aria-selected=true]{background:var(--fg);color:var(--bg)}
+.tab b{font-weight:900;opacity:.65;margin-left:4px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 8px;font-size:.8rem;color:var(--mute)}
+.link{border:0;background:none;padding:6px 0;font:700 .8rem Archivo,sans-serif;color:var(--fg);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.wrapt{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead{background:var(--head);color:var(--headfg)}
+th{padding:10px 12px;text-align:left;font-weight:700;white-space:nowrap}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+tbody tr{cursor:pointer}tbody tr:hover{background:var(--hover)}
+.code{font-weight:800;white-space:nowrap}
+.nm{font-weight:700;word-break:break-word}
+.th{color:var(--mute);font-size:.8rem;line-height:1.35}.th div+div{margin-top:2px}
+.dt{white-space:nowrap}
+.badge{display:inline-block;padding:3px 9px;border-radius:6px;font-size:.74rem;font-weight:700;white-space:nowrap}
+.s-received{background:var(--b-rec-bg);color:var(--b-rec-fg)}.s-progress{background:var(--b-pro-bg);color:var(--b-pro-fg)}
+.s-delivered{background:var(--b-del-bg);color:var(--b-del-fg)}.s-cancelled{background:var(--b-can-bg);color:var(--b-can-fg)}
+.md{display:none}@media(min-width:768px){.md{display:table-cell}}
+.pager{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:14px}
+.pg{min-width:38px;min-height:38px;padding:0 10px;border:2px solid var(--fg);border-radius:4px;background:var(--card);color:var(--fg);font:700 .85rem Archivo,sans-serif;cursor:pointer}
+.pg:hover:not(:disabled){background:var(--hi);color:#000144}.pg[aria-current=page]{background:var(--fg);color:var(--bg)}.pg:disabled{opacity:.4;cursor:not-allowed}
+.gap{align-self:center;color:var(--mute)}
+.msg{padding:28px 16px;text-align:center}.msg p{margin:0 0 10px}.msg .err{color:var(--red);font-weight:700}
+.btn{border:0;border-radius:4px;background:var(--hi);color:#000144;padding:10px 16px;font:900 .8rem Archivo,sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;min-height:42px}
+.note{margin:22px 0 0;font-size:.78rem;color:var(--mute);max-width:70ch}
+/* modal */
+#modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.5)}
+#modal.open{display:flex}
+.dlg{position:relative;width:100%;max-width:640px;max-height:90vh;overflow:auto;background:var(--card);color:var(--fg);border:2px solid var(--fg);border-radius:12px;padding:22px;box-shadow:6px 6px 0 var(--hi)}
+.x{position:absolute;right:12px;top:10px;border:0;background:none;color:var(--mute);font-size:1.2rem;cursor:pointer;padding:6px 10px}.x:hover{color:var(--fg)}
+.mh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-right:32px}
+.mh h3{margin:0;font:900 1.35rem/1.2 Archivo,sans-serif;word-break:break-word}
+.cs{margin:4px 0 14px;font-size:.85rem;color:var(--mute)}
+.grid{display:grid;grid-template-columns:1fr;gap:8px}@media(min-width:520px){.grid{grid-template-columns:1fr 1fr}}
+.ic{border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.il{display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:700}
+.iv{display:block;font-weight:700;word-break:break-all}
+.sl{margin:16px 0 8px;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:700}
+.tm{border:1px solid var(--line);border-left:4px solid var(--fg);border-radius:6px;padding:8px 12px;font-weight:600;margin-bottom:8px}
+.mf{display:flex;justify-content:flex-end;align-items:center;gap:12px;margin-top:18px}
+.mf span{font-size:.8rem;color:var(--mute)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header class="hd">
+  <div>
+    <h1>✦ 任せ屋 ✦ | READING TRACKER</h1>
+    <p class="sub">Last updated: <span id="lastUpdate">—</span></p>
+  </div>
+  <div class="ctl">
+    <input id="q" type="search" placeholder="Cari kode, nama, platform…" autocomplete="off" maxlength="40" aria-label="Cari order">
+    <select id="statusFilter" aria-label="Saring status"></select>
+    <button class="icon" id="dark" type="button" aria-label="Ganti mode gelap" title="Mode gelap">☾</button>
+  </div>
+</header>
+
+<div class="ctl" style="margin-bottom:12px">
+  <div class="tabs" role="tablist" aria-label="Tampilan tabel" id="tabs">
+    <button class="tab" role="tab" data-v="all" aria-selected="true">Semua <b id="n-all">0</b></button>
+    <button class="tab" role="tab" data-v="active" aria-selected="false">Aktif <b id="n-active">0</b></button>
+    <button class="tab" role="tab" data-v="done" aria-selected="false">Completed <b id="n-done">0</b></button>
+  </div>
+</div>
+
+<div class="bar"><span id="count"></span><button class="link" id="refresh" type="button">Perbarui sekarang</button></div>
+
+<div class="wrapt">
+  <table>
+    <thead><tr>
+      <th>Kode</th><th>Nama</th><th class="md">Tema</th><th class="md">Order</th><th>Received</th><th>Status Pesanan</th>
+    </tr></thead>
+    <tbody id="body"></tbody>
+  </table>
+  <div id="state"></div>
+</div>
+<nav class="pager" id="pager" aria-label="Halaman"></nav>
+
+<p class="note">Note: Status bersifat view-only dan diperbarui oleh Admin. Demi privasi, nama, kontak, dan email disensor: hanya huruf depan dan belakang tiap kata yang terlihat. Klik baris untuk melihat detail. Urutan: order terbaru di paling atas.</p>
+</main>
+
+<div id="modal" aria-hidden="true">
+  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="mName">
+    <button class="x" id="mClose" type="button" aria-label="Tutup">✕</button>
+    <div class="mh"><h3 id="mName"></h3><span id="mStatus" class="badge"></span></div>
+    <div class="cs"><em id="mClient"></em></div>
+    <div class="grid">
+      <div class="ic"><span class="il">Kode</span><span class="iv" id="mCode"></span></div>
+      <div class="ic"><span class="il">Platform</span><span class="iv" id="mPlatform"></span></div>
+      <div class="ic"><span class="il">Kontak</span><span class="iv" id="mContact"></span></div>
+      <div class="ic"><span class="il">Email</span><span class="iv" id="mEmail"></span></div>
+      <div class="ic"><span class="il">Tanggal Order</span><span class="iv" id="mOrder"></span></div>
+      <div class="ic"><span class="il">Tanggal Received</span><span class="iv" id="mRecv"></span></div>
+    </div>
+    <div class="sl">Pesanan</div>
+    <div id="mThemes"></div>
+    <div class="mf"><span id="copied" hidden>Link disalin ✓</span><button class="btn" id="share" type="button">Share Link</button></div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ST={received:'Form Received',progress:'On Progress',delivered:'Delivered',cancelled:'Cancelled'},PAGE=15,REFRESH_MS=60000;
+let ALL=[],view='all',status='',q='',page=1,loaded=false,loading=false,lastFocus=null,openCode='';
+const note=()=>{try{parent.postMessage({omk:document.documentElement.scrollHeight},'*')}catch(e){}};
+new ResizeObserver(note).observe(document.body);
+
+const fmtDate=s=>s?new Date(s+'T00:00:00+07:00').toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric',timeZone:'Asia/Jakarta'}):'—';
+const isActive=o=>o.status==='received'||o.status==='progress';
+const inView=o=>view==='all'||(view==='active'&&isActive(o))||(view==='done'&&o.status==='delivered');
+function rows(){
+  const k=q.trim().toLowerCase();
+  return ALL.filter(o=>inView(o)&&(view!=='all'||!status||o.status===status)&&(!k||[o.code,o.name,o.platform,o.contact,o.email,(o.items||[]).join(' ')].join(' ').toLowerCase().includes(k)));
+}   // ALL sudah diurutkan terbaru di atas (n menurun), jadi semua tabel, termasuk Completed, terbaru di paling atas
+
+function tr(o){
+  const th=(o.items||[]);
+  return `<tr tabindex="0" data-n="${o.n}"><td class="code">${esc(o.code||'—')}</td><td class="nm">${esc(o.name)}</td>
+<td class="md th">${th.length?th.slice(0,2).map(i=>`<div>${esc(i)}</div>`).join('')+(th.length>2?`<div>+${th.length-2} lainnya</div>`:''):'—'}</td>
+<td class="md dt">${esc(fmtDate(o.orderDate))}</td><td class="dt">${esc(fmtDate(o.deadline))}</td><td><span class="badge s-${esc(o.status)}">${esc(ST[o.status]||o.status)}</span></td></tr>`;
+}
+function pager(total,pages){
+  const el=$('#pager');if(pages<=1){el.innerHTML='';return}
+  const set=new Set([1,pages,page-1,page,page+1]),list=[...set].filter(p=>p>=1&&p<=pages).sort((a,b)=>a-b);
+  let h=`<button class="pg" data-p="${page-1}" ${page<=1?'disabled':''} aria-label="Sebelumnya">‹</button>`,prev=0;
+  list.forEach(p=>{if(prev&&p-prev>1)h+='<span class="gap">…</span>';h+=`<button class="pg" data-p="${p}" ${p===page?'aria-current="page"':''}>${p}</button>`;prev=p});
+  el.innerHTML=h+`<button class="pg" data-p="${page+1}" ${page>=pages?'disabled':''} aria-label="Berikutnya">›</button>`;
+}
+function counts(){
+  const c={all:ALL.length,active:ALL.filter(isActive).length,done:ALL.filter(o=>o.status==='delivered').length};
+  for(const k in c)$('#n-'+k).textContent=c[k];
+  const sel=$('#statusFilter'),has=ALL.some(o=>o.status==='cancelled'),keys=['received','progress','delivered'].concat(has?['cancelled']:[]);
+  if(sel.dataset.k!==keys.join()){sel.innerHTML='<option value="">All Status</option>'+keys.map(s=>`<option value="${s}">${ST[s]}</option>`).join('');sel.dataset.k=keys.join();sel.value=status}
+  sel.hidden=view!=='all';
+}
+function render(){
+  counts();document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',String(t.dataset.v===view)));
+  if(!loaded)return;
+  const r=rows(),pages=Math.max(1,Math.ceil(r.length/PAGE));page=Math.min(page,pages);
+  $('#count').textContent=r.length+' order';
+  $('#body').innerHTML=r.slice((page-1)*PAGE,page*PAGE).map(tr).join('');
+  $('#state').innerHTML=r.length?'':`<div class="msg"><p><b>${ALL.length?'Tidak ada order yang cocok.':'Belum ada order.'}</b></p><p>${ALL.length?'Periksa lagi kode order (format OMK-0091) atau ganti filter.':'Order yang masuk akan muncul di sini.'}</p></div>`;
+  pager(r.length,pages);note();
+}
+function fail(msg){
+  if(loaded)return;
+  $('#body').innerHTML='';$('#pager').innerHTML='';$('#count').textContent='';$('#lastUpdate').textContent='gagal memuat';
+  $('#state').innerHTML=`<div class="msg"><p class="err">${esc(msg)}</p><button class="btn" type="button" id="retry">Coba lagi</button></div>`;note();
+}
+async function load(){
+  if(loading)return;loading=true;$('#refresh').disabled=true;
+  if(!loaded)$('#state').innerHTML='<div class="msg"><p>Memuat data order…</p></div>';
+  try{
+    if(!window.API_URL||/GANTI/.test(window.API_URL))throw new Error('Tracker belum tersambung ke data order.');
+    const r=await fetch(window.API_URL+(window.API_URL.includes('?')?'&':'?')+'action=tracker&t='+Date.now(),{cache:'no-store'});
+    const j=await r.json();
+    if(!j||!j.ok||!Array.isArray(j.orders))throw new Error('Data order belum bisa dibaca.');
+    ALL=j.orders.slice().sort((a,b)=>b.n-a.n);loaded=true;
+    $('#lastUpdate').textContent=new Date(j.updated).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Jakarta'}).replace('.',':')+' WIB';
+    render();
+    if(openCode){const o=ALL.find(x=>String(x.code).toLowerCase()===openCode.toLowerCase());openCode='';if(o)openModal(o)}
+  }catch(e){fail(e&&e.message&&!/fetch|json|network|load failed/i.test(e.message)?e.message:'Tidak bisa terhubung ke server. Periksa koneksi lalu coba lagi.')}
+  finally{loading=false;$('#refresh').disabled=false}
+}
+/* modal */
+let cur=null;
+function openModal(o){
+  cur=o;lastFocus=document.activeElement;
+  $('#mName').textContent=o.name;const b=$('#mStatus');b.textContent=ST[o.status]||o.status;b.className='badge s-'+o.status;
+  $('#mClient').textContent=o.visit==='Sudah pernah.'?'Klien lama (pernah berkunjung)':o.visit==='Belum pernah.'?'Klien baru (kunjungan pertama)':'';
+  $('#mCode').textContent=o.code||'—';$('#mPlatform').textContent=o.platform||'—';$('#mContact').textContent=o.contact||'—';$('#mEmail').textContent=o.email||'—';
+  $('#mOrder').textContent=fmtDate(o.orderDate);$('#mRecv').textContent=fmtDate(o.deadline);
+  $('#mThemes').innerHTML=(o.items&&o.items.length?o.items:['—']).map(i=>`<div class="tm">${esc(i)}</div>`).join('');
+  $('#copied').hidden=true;$('#modal').classList.add('open');$('#modal').setAttribute('aria-hidden','false');$('#mClose').focus();
+}
+function closeModal(){$('#modal').classList.remove('open');$('#modal').setAttribute('aria-hidden','true');cur=null;if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+$('#mClose').addEventListener('click',closeModal);
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cur)closeModal()});
+$('#share').addEventListener('click',async()=>{
+  if(!cur||!cur.code)return;const url=location.origin+location.pathname+'?kode='+encodeURIComponent(cur.code);
+  try{await navigator.clipboard.writeText(url);$('#copied').hidden=false}catch(e){prompt('Salin link ini:',url)}
+});
+/* events */
+const openRow=t=>{const o=ALL.find(x=>String(x.n)===t.dataset.n);if(o)openModal(o)};
+$('#body').addEventListener('click',e=>{const t=e.target.closest('tr[data-n]');if(t)openRow(t)});
+$('#body').addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const t=e.target.closest('tr[data-n]');if(!t)return;e.preventDefault();openRow(t)});
+$('#q').addEventListener('input',e=>{q=e.target.value;page=1;render()});
+$('#statusFilter').addEventListener('change',e=>{status=e.target.value;page=1;render()});
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;view=b.dataset.v;page=1;render()});
+$('#pager').addEventListener('click',e=>{const b=e.target.closest('[data-p]');if(!b||b.disabled)return;page=+b.dataset.p;render();scrollTo({top:0})});
+$('#refresh').addEventListener('click',load);
+document.addEventListener('click',e=>{if(e.target.id==='retry')load()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&loaded)load()});
+setInterval(()=>{if(!document.hidden)load()},REFRESH_MS);
+function theme(){$('#dark').textContent=document.documentElement.classList.contains('dark')?'☀':'☾'}
+$('#dark').addEventListener('click',()=>{const d=document.documentElement.classList.toggle('dark');try{localStorage.setItem('omk-theme',d?'dark':'light')}catch(e){}theme()});
+theme();
+// tautan langsung: tracker?kode=OMK-0091  (membuka detail order itu)
+(function(){const v=(new URLSearchParams(location.search).get('kode')||location.hash.slice(1)||'').slice(0,40);if(v){q=v;$('#q').value=v;openCode=v}})();
+load();
+</script>
+</body>
+</html>
