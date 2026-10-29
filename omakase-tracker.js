@@ -325,11 +325,11 @@ tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:var
     const CODE_RE=/^[A-Za-z]{2,6}-\d{1,6}$/;
     // Terima: ?kode=OMK-0091 | #tracker?kode=OMK-0091 | #OMK-0091. Hash biasa seperti #tracker diabaikan.
     function readKode(){let v='';try{const h=location.hash.slice(1),i=h.indexOf('?');v=new URLSearchParams(location.search).get('kode')||(i>-1?new URLSearchParams(h.slice(i+1)).get('kode'):'')||(i>-1?h.slice(0,i):h)||''}catch(e){}v=String(v).trim().slice(0,40);return CODE_RE.test(v)?v:''}
-    function gotoKode(k,scroll){q=k;$('#q').value=k;SEC.forEach(x=>x.p=1);if(loaded){render();const o=ALL.find(x=>String(x.code).toLowerCase()===k.toLowerCase());if(o)openModal(o)}else openCode=k;if(scroll)host.scrollIntoView({behavior:'auto',block:'start'})}
+    function gotoKode(k,scroll){if(loaded){const o=ALL.find(x=>String(x.code).toLowerCase()===k.toLowerCase());if(o)openModal(o)}else openCode=k;if(scroll)host.scrollIntoView({behavior:'auto',block:'start'})}
     // Carrd menampilkan section lewat hash. Kalau halaman dibuka dengan ?kode= tapi hash-nya bukan section tracker (mis. kosong atau #home), pindahkan.
     function goSection(){const b=location.hash.slice(1).split('?')[0];if(b!==HASHNAME){try{location.hash=HASHNAME}catch(e){}}}
     let lastK='';
-    (function(){const k=readKode();if(k){lastK=k;q=k;$('#q').value=k;openCode=k;setTimeout(goSection,300);setTimeout(goSection,1500)}})();
+    (function(){const k=readKode();if(k){lastK=k;openCode=k;setTimeout(goSection,300);setTimeout(goSection,1500)}})();
     window.addEventListener('hashchange',()=>{const k=readKode();if(k&&k!==lastK){lastK=k;gotoKode(k,true)}});
     fetch(BASE+'/menus.json',{cache:'no-cache'}).then(r=>r.json()).then(c=>{buildMap(c);if(loaded)render()}).catch(()=>{});
     load();
